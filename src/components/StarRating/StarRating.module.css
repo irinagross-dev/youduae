@@ -1,0 +1,49 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.starWrapper {
+  display: inline-block;
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+
+.starWrapper svg {
+  width: 14px;
+  height: 14px;
+}
+
+.starFilled {
+  fill: #FFD700 !important; /* Золотой цвет */
+}
+
+.starEmpty {
+  fill: #E0E0E0 !important; /* Светло-серый цвет */
+}
+
+/* Контейнер для половинчатой звезды */
+.halfStarContainer {
+  display: block;
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+
+/* Overlay для половинчатой звезды */
+.halfStarOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.halfStarOverlay svg {
+  width: 14px;
+  height: 14px;
+}
+

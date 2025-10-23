@@ -1,0 +1,18 @@
+.root {
+  /* Фон hero-секции */
+  background-image: url("../../../../assets/main-bg.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  min-height: 80vh;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10%;
+  
+  
+  @media (max-width: 768px) {
+    padding-left: 5%;
+  }
+}

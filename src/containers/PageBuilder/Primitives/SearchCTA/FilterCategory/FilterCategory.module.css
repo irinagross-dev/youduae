@@ -1,0 +1,60 @@
+@import '../../../../../styles/customMediaQueries.css';
+
+.filterContainer {
+  position: relative;
+  width: 100%;
+}
+
+.filterContainer.alignLeft {
+  /* Стили для выравнивания влево */
+}
+
+.searchInput {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--colorWhite);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  min-height: 48px;
+
+  &:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  stroke: var(--colorGrey600);
+}
+
+.placeholder {
+  font-size: 14px;
+  color: var(--colorGrey700);
+  font-weight: var(--fontWeightRegular);
+}
+
+@media (--viewportMedium) {
+  .searchInput {
+    min-height: 50px;
+    padding: 12px 18px;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .placeholder {
+    font-size: 14px;
+  }
+}
+

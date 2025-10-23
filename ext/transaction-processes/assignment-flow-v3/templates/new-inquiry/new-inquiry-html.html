@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h2>Новый отклик на ваше задание!</h2>
+    <p>Здравствуйте, {{recipient.display-name}}!</p>
+    <p>Вы получили новый отклик на задание <strong>{{listing.title}}</strong>.</p>
+    <p><strong>Исполнитель:</strong> {{customer.display-name}}</p>
+    <p><strong>Предложенная цена:</strong> {{transaction.protected-data.offer.price}} {{transaction.protected-data.offer.currency}}</p>
+    <p><strong>Комментарий:</strong> {{transaction.protected-data.offer.comment}}</p>
+    <p><a href="{{marketplace.url}}/sale/{{transaction.id}}">Открыть сделку</a></p>
+    <p>С уважением,<br>{{marketplace.name}}</p>
+</body>
+</html>
+

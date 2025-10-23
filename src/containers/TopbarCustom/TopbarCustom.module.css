@@ -1,0 +1,367 @@
+/* === ОБЩЕЕ ОФОРМЛЕНИЕ ХЕДЕРА === */
+.wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: transparent; /* Убедимся что фон не блокирует */
+  pointer-events: none; /* Отключаем события на обертке */
+}
+
+.container {
+  box-sizing: border-box;
+  max-width: 1220px;
+  height: 90px;
+  margin: 0 auto;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  pointer-events: auto; /* Включаем события на контейнере */
+}
+
+/* === ЛЕВАЯ СЕКЦИЯ (только логотип) === */
+
+.leftSection {
+  display: flex;
+  align-items: center;
+}
+
+/* === ЛОГО === */
+
+.logoLink {
+  text-decoration: none;
+  pointer-events: auto; /* Включаем клики */
+}
+
+.logoLink:hover {
+  text-decoration: none;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  height: 78px;
+  padding: 9px 10px;
+
+  background: #f7f7f7;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logoBadge {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+  overflow: hidden;
+}
+
+.logoBadge svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 
+  Чтобы использовать свое изображение вместо SVG:
+  1. Добавьте файл Logo.png в папку src/assets/
+  2. Раскомментируйте строку ниже:
+*/
+.logoBadge {
+  background: url('../../assets/Logo.png') center center / cover no-repeat;
+}
+.logoBadge svg {
+  display: none;
+} 
+
+/* текст YouDu справа от логотипа */
+.logoText {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.03em;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* === НАВИГАЦИЯ === */
+
+/* Навигация для НЕавторизованных (с "Для специалистов" слева) */
+.nav {
+  flex: 1; /* занимает оставшуюся ширину */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* "Для специалистов" слева, кнопки справа */
+  padding: 9px 10px;
+  height: 78px;
+  background: #F7F7F7;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 25px;
+  pointer-events: auto; /* Включаем клики для навигации */
+}
+
+/* Навигация для авторизованных (все справа) */
+.navAuthenticated {
+  flex: 1; /* занимает оставшуюся ширину */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Все элементы справа */
+  padding: 9px 10px;
+  height: 78px;
+  background: #F7F7F7;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 25px;
+  pointer-events: auto; /* Включаем клики для навигации */
+}
+
+/* === ПРАВАЯ СЕКЦИЯ (единый блок для авторизованных) === */
+.rightSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 9px 10px;
+  height: 78px;
+  background: #F7F7F7;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 25px;
+  pointer-events: auto;
+}
+
+.rightButtons {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* расстояние между кнопками */
+  pointer-events: auto; /* Включаем клики для группы кнопок */
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  color: #000;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.03em;
+  background: #F7F7F7;
+  border-radius: 15px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  pointer-events: auto; /* Включаем клики для ссылок */
+  cursor: pointer;
+}
+
+.navLink:hover {
+    text-decoration: none;
+  color: #909090;
+  transition: color 0.2s ease;
+}
+
+/* === ССЫЛКИ ВНУТРИ ЕДИНОГО БЛОКА (без фона) === */
+.navLinkUnified {
+  display: inline-flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  color: #000;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.03em;
+  background: transparent;
+  border-radius: 15px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.navLinkUnified:hover {
+   text-decoration: none;
+  color: #909090;
+  transition: color 0.2s ease;
+}
+
+.logoLink:hover {
+  text-decoration: none;
+}
+
+/* === КНОПКА ВОЙТИ === */
+
+.enterBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  padding: 20px 28px;
+  text-decoration: none;
+  border: none; /* Убираем стандартную рамку кнопки */
+
+  background: #FFC934;
+  color: #000;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.03em;
+
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.02s ease;
+  cursor: pointer;
+  pointer-events: auto; /* Убедимся что клики проходят */
+  position: relative; /* Для правильного z-index */
+  z-index: 10; /* Поднимем над другими элементами */
+}
+
+.enterBtn:hover {
+  background: #000000;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.enterBtn:active {
+  transform: scale(0.98); /* Визуальная обратная связь при клике */
+}
+
+.enterBtn:focus {
+  outline: 2px solid #FFC934; /* Добавляем обводку при фокусе для accessibility */
+  outline-offset: 2px;
+}
+
+/* === МЕНЮ ПРОФИЛЯ (для авторизованных пользователей) === */
+
+.profileMenuLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  height: 60px;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.profileMenuLabel:hover {
+  background: #EFEFEF;
+}
+
+.profileMenuIsOpen {
+  background: #E5E5E5;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.profileName {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+}
+
+/* === ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ === */
+.languageSwitcherWrapper {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 10px;
+}
+
+/* Переопределяем стили LanguageSwitcher для вертикального отображения */
+.languageSwitcherWrapper :global(div) {
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 6px 8px !important;
+  background-color: transparent !important;
+  height: auto !important;
+}
+
+.languageSwitcherWrapper :global(button) {
+  font-size: 13px !important;
+  padding: 4px 8px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  min-width: auto !important;
+}
+
+.languageSwitcherWrapper :global(button:hover) {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.profileMenuContent {
+  min-width: 200px;
+  margin-top: 8px;
+}
+
+.menuLink {
+  display: block;
+  padding: 12px 20px;
+  color: #000;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.menuLink:hover {
+  background: #F5F5F5;
+  text-decoration: none;
+}
+
+.logoutButton {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #E53935;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background: #FFEBEE;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    padding: 8px;
+  }
+
+  .logoBox,
+  .nav {
+    height: auto;
+  }
+
+  .nav {
+    gap: 20px;
+  }
+
+  .navLink,
+  .enterBtn {
+    height: 48px;
+  }
+}
+

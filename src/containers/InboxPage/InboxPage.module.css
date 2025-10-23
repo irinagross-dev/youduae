@@ -1,0 +1,481 @@
+@import '../../styles/customMediaQueries.css';
+
+.mobileTopbar {
+  /* Size */
+  width: 100%;
+  height: var(--topbarHeight);
+
+  /* Layout for child components */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  /* fill */
+  background-color: var(--colorWhite);
+
+  /* shadows */
+  box-shadow: none;
+
+  @media (--viewportMedium) {
+    height: var(--topbarHeightDesktop);
+  }
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.desktopTopbar,
+.mobileTopbar {
+  box-shadow: none;
+
+  @media (--viewportLarge) {
+    box-shadow: var(--boxShadowLight);
+  }
+}
+
+/* Main container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+
+  @media (--viewportMedium) {
+    padding: 0 36px;
+  }
+
+  @media (--viewportLarge) {
+    padding: 0 48px;
+  }
+}
+
+/* Header with title and tabs */
+.header {
+  background-color: var(--colorWhite);
+  border-bottom: 1px solid var(--colorGrey100);
+  padding: 24px 0;
+  margin-bottom: 24px;
+
+  @media (--viewportMedium) {
+    padding: 32px 0;
+    margin-bottom: 32px;
+  }
+}
+
+/* Title */
+.title {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: var(--fontWeightSemiBold);
+
+  @media (--viewportMedium) {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  @media (--viewportLarge) {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Container for tabs - всё в одну строку */
+.tabsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+
+  @media (--viewportMedium) {
+    gap: 20px;
+  }
+
+  @media (--viewportLarge) {
+    gap: 24px;
+  }
+}
+
+/* Main tabs (Orders / Sales) - минималистичный стиль */
+.tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  font-size: 11px;
+
+  @media (--viewportMedium) {
+    gap: 20px;
+    font-size: 12px;
+  }
+
+  @media (--viewportLarge) {
+    gap: 24px;
+    font-size: 13px;
+  }
+
+  /* Стилизация ссылок - минималистично */
+  & :global(a) {
+    display: inline-block;
+    padding: 4px 0;
+    background-color: transparent;
+    border: none;
+    color: var(--colorGrey700);
+    text-decoration: none;
+    font-weight: var(--fontWeightMedium);
+    transition: color 0.2s ease;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      color: var(--colorBlack);
+    }
+  }
+
+  /* Активный/выбранный таб */
+  & :global(a.selectedLink),
+  & :global(a[class*="selectedLink"]) {
+    color: var(--colorBlack);
+    font-weight: var(--fontWeightSemiBold);
+    border-bottom-color: var(--colorBlack);
+  }
+}
+
+.tab {
+  margin: 0;
+  font-size: inherit;
+}
+
+.error {
+  color: var(--colorFail);
+  margin: 23px 24px 24px 24px;
+
+  @media (--viewportLarge) {
+    margin-top: 18px;
+  }
+}
+
+.noResults {
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: 1px;
+
+  @media (--viewportLarge) {
+    margin-top: 25px;
+  }
+}
+
+.itemList {
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes loadingSpinnerFadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.listItemsLoading {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  opacity: 0;
+
+  /* animation shorthand property doesn't work with local scope of CSS Modules */
+  animation-duration: 1s;
+  animation-name: loadingSpinnerFadeIn;
+  animation-fill-mode: forwards;
+}
+
+.listItem {
+  /* Layout */
+  margin-bottom: 10px;
+  padding-bottom: 12px;
+
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--colorGrey100);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (--viewportLarge) {
+    margin-bottom: 16px;
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+}
+
+.itemAvatar {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+
+  @media (--viewportMedium) {
+    display: block;
+    align-items: unset;
+  }
+
+  @media (--viewportLarge) {
+    margin-top: 3px;
+    margin-right: 7px;
+  }
+}
+
+.itemLink {
+  flex: 1;
+
+  /* Layout */
+  display: inline-grid;
+  grid-template-columns: 22px auto;
+  grid-template-areas:
+    'dot name    state'
+    '... item    state'
+    '... details state'
+    '... seats   state';
+  padding: 2px 0 6px;
+  gap: 4px 0;
+
+  /* Remove text underline from this link */
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover .itemUsername {
+    /* Hightlight the username when the whole item is hovered */
+    color: var(--marketplaceColor);
+  }
+}
+
+.rowNotificationDot {
+  grid-area: dot;
+  justify-self: center;
+  align-self: flex-start;
+  margin-top: 8px;
+
+  width: 6px;
+  height: 6px;
+
+  @media (--viewportLarge) {
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+
+  @media (--viewportLarge) {
+    justify-self: flex-start;
+    width: 8px;
+    height: 8px;
+  }
+}
+
+.notificationDot {
+  color: var(--colorWhite);
+
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--colorFail);
+}
+
+.itemUsername {
+  grid-area: name;
+
+  /* Font */
+  composes: textSmall from global;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorGrey700);
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  /* Flex layout for name + verification badge */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (--viewportMedium) {
+    line-height: 16px;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+.itemTitle {
+  composes: marketplaceTinyFontStyles from global;
+  grid-area: item;
+  color: var(--colorGrey700);
+
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.itemDetails {
+  composes: marketplaceTinyFontStyles from global;
+  grid-area: details;
+  color: var(--colorGrey700);
+
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.itemSeats {
+  composes: marketplaceTinyFontStyles from global;
+  grid-area: seats;
+  color: var(--colorGrey700);
+
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.itemState {
+  grid-area: state;
+
+  /* Font */
+  composes: marketplaceTinyFontStyles from global;
+  line-height: 18px;
+  font-weight: var(--fontWeightMedium);
+  letter-spacing: normal;
+
+  justify-self: flex-end;
+  text-align: end;
+
+  margin-top: 6px;
+  margin-bottom: 0px;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.pagination {
+  margin: auto 24px 0 24px;
+}
+
+/* Transaction status affects to certain font colors and weights */
+
+.stateName {
+  /* This class is empty on purpose, it is used below for banned users */
+}
+
+.stateActionNeeded {
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorAttention);
+}
+
+.stateNoActionNeeded {
+  color: var(--colorGrey700);
+}
+
+.stateConcluded {
+  color: var(--colorGrey300);
+}
+
+.bookingActionNeeded {
+  color: var(--colorGrey700);
+  margin-top: 4px;
+
+  @media (--viewportMedium) {
+    margin-top: 9px;
+  }
+}
+
+.bookingNoActionNeeded {
+  color: var(--colorGrey300);
+}
+
+.lastTransitionedAtEmphasized {
+  color: var(--colorGrey700);
+  font-weight: var(--fontWeightMedium);
+}
+
+.lastTransitionedAtNotEmphasized {
+  color: var(--colorGrey300);
+}
+
+.bannedUserLink {
+  & .itemUsername,
+  &:hover .itemUsername,
+  & .stateName {
+    color: var(--colorGrey300);
+  }
+}
+
+/* Subtabs for status filtering - минималистичный стиль */
+.subtabs {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  font-size: 11px;
+
+  @media (--viewportMedium) {
+    gap: 20px;
+    font-size: 12px;
+  }
+
+  @media (--viewportLarge) {
+    gap: 24px;
+    font-size: 13px;
+  }
+
+  /* Стилизация ссылок - минималистично */
+  & :global(a) {
+    display: inline-block;
+    padding: 4px 0;
+    background-color: transparent;
+    border: none;
+    color: var(--colorGrey700);
+    text-decoration: none;
+    font-weight: var(--fontWeightMedium);
+    transition: color 0.2s ease;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      color: var(--colorBlack);
+    }
+  }
+
+  /* Активный/выбранный подтаб */
+  & :global(a.selectedLink),
+  & :global(a[class*="selectedLink"]) {
+    color: var(--colorBlack);
+    font-weight: var(--fontWeightSemiBold);
+    border-bottom-color: var(--colorBlack);
+  }
+}
+
+.subtab {
+  margin: 0;
+}
+
+/* Content area with transaction list */
+.content {
+  background-color: var(--colorWhite);
+  padding: 24px 0;
+  min-height: 400px;
+
+  @media (--viewportMedium) {
+    padding: 32px 0;
+  }
+}

@@ -1,0 +1,251 @@
+.footer {
+  position: relative;
+  width: 100%;
+  background: #EEF7FA;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.container {
+  position: relative;
+  width: 1200px;
+  height: 307px;
+  padding: 6px 10px;
+  box-sizing: border-box;
+}
+
+/* ---------- ЛОГО ---------- */
+.logoName {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #000;
+}
+
+.logoPic {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.logoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logoText {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  color: #000;
+}
+
+/* Убираем подчёркивание у логотипа во всех состояниях */
+.logoName,
+.logoName:hover,
+.logoName:focus,
+.logoName:active,
+.logoName:visited {
+  text-decoration: none;
+  color: #000; /* чтобы цвет не менялся у :visited */
+}
+
+.logoName .logoText {
+  text-decoration: none;
+}
+
+/* ---------- КОЛОНКИ ---------- */
+
+/* Колонка 1 */
+.column1 {
+  position: absolute;
+  left: 0;
+  bottom: 121px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.col1Item {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  color: #000;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.col1Item:hover { color: #909090; text-decoration: none; }
+
+/* Колонка 2 */
+.column2 {
+  position: absolute;
+  left: 306px;
+  bottom: 121px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.col2Item {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  color: #000;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.col2Item:hover { color: #909090; text-decoration: none; }
+
+/* Колонка 3 */
+.column3 {
+  position: absolute;
+  right: 0;
+  bottom: 121px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+/* Внутренний блок */
+.frame2 {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 12px;
+}
+
+/* Служба поддержки */
+.supportTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  color: #000;
+}
+
+/* Кнопка поддержки */
+.btnSupport {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 194px;
+  height: 60px;
+  background: #000;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  transition: all .2s ease;
+}
+.btnText {
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+}
+.btnSupport:hover {
+  background: #EEF7FA;
+  border: 1px solid #000;
+  text-decoration: none;
+}
+.btnSupport:hover .btnText {
+  color: #000;
+  text-decoration: none;
+}
+
+/* Подпись */
+.supportNote {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #000;
+  letter-spacing: -0.03em;
+}
+
+/* ---------- Нижняя линия и подписи ---------- */
+.line {
+  position: absolute;
+  left: 0;
+  top: 243px;
+  width: 100%;
+  height: 0;
+  border-top: 1px solid #909090;
+}
+
+.bottomRow {
+  position: absolute;
+  bottom: 23px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copyright {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #000;
+  letter-spacing: -0.03em;
+}
+
+.policy {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #000;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.policy:hover { color: #909090; text-decoration: none; }
+
+/* ---------- АДАПТИВ ---------- */
+@media (max-width: 1280px) {
+  .container { width: 1200px; padding: 0 80px; }
+}
+@media (max-width: 1024px) {
+  .container { width: 960px; padding: 0 64px; }
+  .column2 { left: 260px; }
+}
+@media (max-width: 768px) {
+  .container {
+    width: 700px;
+    height: auto;
+    padding: 40px;
+  }
+  .column1, .column2, .column3, .line, .bottomRow, .logoName {
+    position: static;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .bottomRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    position: static;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding: 24px;
+  }
+  .btnSupport {
+    width: 100%;
+    max-width: 280px;
+  }
+  .column1, .column2, .column3 {
+    align-items: flex-start;
+  }
+}

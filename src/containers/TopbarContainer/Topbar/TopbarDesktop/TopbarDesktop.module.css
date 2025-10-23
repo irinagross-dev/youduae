@@ -1,0 +1,416 @@
+@import '../../../../styles/customMediaQueries.css';
+
+/* Desktop - новый дизайн из Figma */
+.root {
+  /* Size */
+  width: 100%;
+  max-width: 1200px;
+  height: var(--topbarHeightDesktop);
+  margin: 0 auto;
+
+  /* Layout for child components */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  gap: 19px;
+  overflow: visible;
+  box-sizing: border-box;
+
+  /* fill - прозрачный фон, блоки будут иметь свой фон */
+  background-color: transparent;
+
+  /* shadows - убираем, будут на блоках */
+  box-shadow: none;
+
+  @media (--viewportLarge) {
+    max-width: 1200px;
+  }
+}
+
+/* Левая секция (logopart) - блок с логотипом из Figma */
+.leftSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 9px 10px;
+  gap: 15px;
+  width: 146px;
+  height: 78px;
+  
+  background: #F7F7F7;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  
+  flex: none;
+  flex-shrink: 0;
+}
+
+/* Правая секция (buttonpart) - блок с навигацией из Figma */
+.rightSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 10px;
+  gap: 15px;
+  flex: 1;
+  height: 78px;
+  
+  background: #F7F7F7;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+}
+
+/* logo */
+.logoLink {
+  border-bottom: 0px solid;
+  transition: var(--transitionStyleButton);
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.logoLink:hover {
+  border-bottom: 4px solid var(--marketplaceColor);
+  border-radius: 0;
+}
+
+/* Search */
+.searchLink {
+  min-width: 320px;
+  height: 100%;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: var(--colorGrey100);
+  margin-right: auto;
+}
+
+.spacer {
+  min-width: 320px;
+  height: 100%;
+  margin-right: auto;
+}
+
+.search {
+  font-weight: var(--fontWeightMedium);
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0;
+  color: var(--colorGrey700);
+
+  display: inline-block;
+  margin: 18px 0;
+  text-decoration: inherit;
+
+  @media (--viewportMedium) {
+    font-weight: var(--fontWeightMedium);
+  }
+}
+
+.takeAvailableSpace {
+  flex-grow: 1;
+
+  /* At 1024px, the translations might need more space than what searchLink otherwise gets. */
+  min-width: 220px;
+}
+
+.topbarSearchWithLeftPadding {
+  padding-left: 24px;
+  padding-right: 24px;
+  height: var(--topbarHeightDesktop);
+
+  @media (--viewportLarge) {
+    padding-left: 34px;
+  }
+}
+
+/* Обычные ссылки топбара - новый дизайн из Figma */
+.topbarLink {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  transition: all 0.2s ease;
+
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.03em;
+  color: #000000;
+
+  display: flex;
+  align-items: center;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+
+  &:hover {
+    color: #000000;
+    opacity: 0.8;
+    text-decoration: none;
+  }
+}
+
+/* Ссылка "Для специалистов" - серым цветом из Figma */
+.forSpecialistsLink {
+  composes: topbarLink;
+  color: #909090;
+  
+  &:hover {
+    color: #606060;
+  }
+}
+
+/* Желтая кнопка "Войти" из Figma (btn-enter) */
+.loginButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 28px;
+  gap: 15px;
+  
+  height: 60px;
+  
+  background: #FFC934;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  border: none;
+  
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.03em;
+  color: #000000;
+  text-decoration: none;
+  
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: #FFD34A;
+    transform: translateY(-1px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    color: #000000;
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.topbarLinkLabel {
+  composes: textSmall from global;
+  display: inline-block;
+  margin: 18px 0;
+  text-decoration: inherit;
+  position: relative;
+}
+
+.notificationDot {
+  /* Dimensions */
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+
+  /* Position */
+  position: absolute;
+  top: 2px;
+  right: -9px;
+
+  /* Style: red dot */
+  background-color: var(--colorFail);
+
+  animation-name: notificationPop;
+  animation-duration: 0.1s;
+  animation-delay: 0.1s;
+  animation-fill-mode: forwards;
+
+  animation-timing-function: ease-in;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.notificationBadge {
+  /* Position */
+  position: relative;
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+  
+  /* Smaller size */
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  padding: 2px 4px;
+  font-size: 11px;
+  line-height: 12px;
+}
+
+@keyframes notificationPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Profile menu */
+.profileMenuLabel {
+  border-bottom: 0px solid;
+  transition: var(--transitionStyleButton);
+
+  font-weight: var(--fontWeightMedium);
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0;
+  color: var(--colorGrey700);
+
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  padding: 0 12px 0 12px;
+
+  &:hover {
+    border-bottom: 4px solid var(--marketplaceColor);
+    border-radius: 0;
+    text-decoration: none;
+  }
+
+  &:active {
+    border-bottom: 0;
+  }
+}
+
+.profileMenuIsOpen {
+  &:hover {
+    border-bottom: 0;
+  }
+}
+
+.avatar {
+  margin: 16px 0;
+}
+
+.profileMenuContent {
+  min-width: 276px;
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+/* left animated "border" like hover element */
+.menuItemBorder {
+  position: absolute;
+  top: 2px;
+  left: 0px;
+  height: calc(100% - 4px);
+  width: 0;
+  transition: width var(--transitionStyleButton);
+}
+
+.menuLink {
+  composes: textSmall from global;
+  position: relative;
+  display: block;
+
+  /* Dimensions */
+  width: 100%;
+  min-width: 276px;
+  margin: 0;
+  padding: 4px 24px;
+
+  /* Layout details */
+  color: var(--colorGrey700);
+  text-align: left;
+  transition: var(--transitionStyleButton);
+
+  &:hover {
+    color: var(--colorBlack);
+    text-decoration: none;
+
+    & .menuItemBorder {
+      width: 6px;
+      background-color: var(--marketplaceColor);
+    }
+  }
+
+  @media (--viewportMedium) {
+    margin: 0;
+  }
+}
+
+.logoutButton {
+  display: inline;
+
+  /* Text size should be inherited */
+  text-decoration: none;
+
+  /* Font is specific to this component */
+  font-weight: var(--fontWeightMedium);
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0;
+
+  /* Dimensions */
+  position: relative;
+  width: 100%;
+  min-width: 276px;
+  margin: 0;
+  padding: 20px 24px;
+
+  /* Layout details */
+  color: var(--colorGrey300);
+  text-align: left;
+  white-space: nowrap;
+  transition: var(--transitionStyleButton);
+
+  /* Borders */
+  border: none;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--colorGrey100);
+
+  &:hover {
+    cursor: pointer;
+    color: var(--colorBlack);
+    text-decoration: none;
+
+    & .menuItemBorder {
+      height: 100%;
+      width: 6px;
+      top: 0;
+      background-color: var(--marketplaceColor);
+    }
+  }
+
+  @media (--viewportMedium) {
+    line-height: 16px;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+}
+
+.currentPage {
+  color: var(--colorBlack);
+  position: relative;
+
+  & .menuItemBorder {
+    width: 6px;
+    background-color: var(--colorBlack);
+  }
+
+  &:hover {
+    & .menuItemBorder {
+      background-color: var(--colorBlack);
+    }
+  }
+}

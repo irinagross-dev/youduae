@@ -1,0 +1,537 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px; /* Уменьшено на 20%: было 24px 48px */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Для десктопа - используем больше пространства */
+@media (min-width: 1024px) {
+  .root {
+    padding: 24px 48px; /* Уменьшено на 20%: было 40px 80px */
+  }
+}
+
+/* Completion Status */
+.completionStatus {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 20px;
+  padding: 12px;
+  background-color: #f0f4ff;
+  border-radius: 8px;
+}
+
+/* Guest Banner */
+.guestBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px; /* Уменьшено на 20%: было 16px */
+  padding: 16px; /* Уменьшено на 20%: было 20px */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px; /* Уменьшено на 20%: было 12px */
+  margin-bottom: 20px; /* Уменьшено на 20%: было 32px */
+  color: white;
+}
+
+.bannerIcon {
+  font-size: 26px; /* Уменьшено на 20%: было 32px */
+  flex-shrink: 0;
+}
+
+.bannerContent {
+  flex: 1;
+}
+
+.bannerTitle {
+  font-size: 14px; /* Уменьшено на 20%: было 18px */
+  font-weight: 600;
+  margin-bottom: 6px; /* Уменьшено на 20%: было 8px */
+}
+
+.bannerText {
+  font-size: 11px; /* Уменьшено на 20%: было 14px */
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+/* Progress Container */
+.progressContainer {
+  margin-bottom: 24px; /* Уменьшено на 20%: было 40px */
+}
+
+/* Steps Indicator */
+.stepsIndicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px; /* Уменьшено на 20%: было 20px */
+  position: relative;
+}
+
+.stepIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px; /* Уменьшено на 20%: было 8px */
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.stepNumber {
+  width: 32px; /* Уменьшено на 20%: было 40px */
+  height: 32px; /* Уменьшено на 20%: было 40px */
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px; /* Уменьшено на 20%: было 16px */
+  transition: all 0.3s ease;
+  border: 2px solid transparent; /* Уменьшено на 20%: было 3px */
+}
+
+.stepIndicator.current .stepNumber {
+  background-color: #667eea;
+  color: white;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: scale(1.1);
+}
+
+.stepIndicator.completed .stepNumber {
+  background-color: #22c55e;
+  color: white;
+}
+
+.stepLabel {
+  font-size: 10px; /* Уменьшено на 20%: было 12px */
+  font-weight: 600;
+  color: #6b7280;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.stepIndicator.current .stepLabel {
+  color: #667eea;
+}
+
+.stepIndicator.completed .stepLabel {
+  color: #22c55e;
+}
+
+/* Progress Bar */
+.progressBar {
+  height: 6px; /* Уменьшено на 20%: было 8px */
+  background-color: #e5e7eb;
+  border-radius: 3px; /* Уменьшено на 20%: было 4px */
+  overflow: hidden;
+  margin-top: 6px; /* Уменьшено на 20%: было 8px */
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+}
+
+/* Step Content */
+.stepContent {
+  margin-bottom: 12px;
+}
+
+/* Step Header - только заголовок */
+.stepHeader {
+  margin-bottom: 24px;
+}
+
+.stepTitle {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #111827;
+}
+
+/* Actions - кнопки внизу страницы в одном ряду */
+.actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.actions button {
+  min-width: 120px;
+}
+
+/* Form Fields */
+.field {
+  margin-bottom: 8px; /* Минимальный отступ между полями */
+}
+
+.label {
+  display: block;
+  font-size: 11px; /* Уменьшено на 20%: было 14px */
+  font-weight: 600;
+  margin-bottom: 6px; /* Уменьшено на 20%: было 8px */
+  color: #374151;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 10px 13px; /* Уменьшено на 20%: было 12px 16px */
+  border: 1px solid #d1d5db;
+  border-radius: 6px; /* Уменьшено на 20%: было 8px */
+  font-size: 13px; /* Уменьшено на 20%: было 16px */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1); /* Уменьшено на 20%: было 3px */
+}
+
+.textarea {
+  resize: vertical;
+  min-height: auto;
+  height: auto;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.select {
+  cursor: pointer;
+  background-color: white;
+}
+
+/* File Input - Modern Upload Button */
+.fileInputWrapper {
+  margin-top: 8px;
+}
+
+.fileInputHidden {
+  display: none;
+}
+
+.fileInputLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: #667eea;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  border: none;
+}
+
+.fileInputLabel:hover {
+  background-color: #5568d3;
+  transform: translateY(-1px);
+}
+
+.fileInputLabel:active {
+  transform: translateY(0);
+}
+
+.uploadIcon {
+  font-size: 20px;
+}
+
+.fileInputLabelDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #9ca3af;
+}
+
+.fileInputLabelDisabled:hover {
+  background-color: #9ca3af;
+  transform: none;
+}
+
+.uploadingMessage {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #1e40af;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Old file input style (keeping for compatibility) */
+.fileInput {
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.fileInput:hover {
+  border-color: #667eea;
+}
+
+/* Image Preview Grid */
+.imagePreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.imagePreviewItem {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+  transition: border-color 0.2s ease;
+}
+
+.imagePreviewItem:hover {
+  border-color: #667eea;
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeImageButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 28px;
+  height: 28px;
+  background-color: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.removeImageButton:hover {
+  background-color: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}
+
+.removeImageButton:active {
+  transform: scale(0.95);
+}
+
+/* Error Messages */
+.error {
+  margin-top: 6px; /* Уменьшено на 20%: было 8px */
+  font-size: 11px; /* Уменьшено на 20%: было 14px */
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* Info Box */
+.infoBox {
+  padding: 13px; /* Уменьшено на 20%: было 16px */
+  background-color: #eff6ff;
+  border-left: 3px solid #3b82f6; /* Уменьшено на 20%: было 4px */
+  border-radius: 6px; /* Уменьшено на 20%: было 8px */
+  font-size: 11px; /* Уменьшено на 20%: было 14px */
+  color: #1e40af;
+  line-height: 1.5;
+  margin-top: 13px; /* Уменьшено на 20%: было 16px */
+}
+
+/* Payment Warning */
+.paymentWarning {
+  margin-top: 8px;
+  padding: 10px;
+  font-size: 11px;
+  color: #6b7280;
+  line-height: 1.4;
+  background-color: #f9fafb;
+  border-radius: 4px;
+  border-left: 2px solid #d1d5db;
+}
+
+.paymentWarning strong {
+  color: #4b5563;
+  font-weight: 600;
+}
+
+/* Image Preview */
+.imagePreview {
+  margin-top: 13px; /* Уменьшено на 20%: было 16px */
+}
+
+.imageCount {
+  padding: 10px 13px; /* Уменьшено на 20%: было 12px 16px */
+  background-color: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 6px; /* Уменьшено на 20%: было 8px */
+  color: #16a34a;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Actions - теперь inline с заголовком */
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Для десктопа - увеличиваем ширину кнопки */
+@media (min-width: 1024px) {
+  .actions button {
+    min-width: 200px;
+  }
+}
+
+.finishButton {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  font-weight: 600;
+  color: white;
+}
+
+.finishButton:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* Responsive */
+@media (--viewportMedium) {
+  .stepTitle {
+    font-size: 22px; /* Уменьшено на 20%: было 28px */
+  }
+
+  .guestBanner {
+    padding: 19px; /* Уменьшено на 20%: было 24px */
+  }
+
+  .bannerTitle {
+    font-size: 16px; /* Уменьшено на 20%: было 20px */
+  }
+}
+
+@media (max-width: 768px) {
+  .root {
+    max-width: 100%;
+    padding: 13px;
+  }
+
+  .stepTitle {
+    font-size: 18px;
+  }
+
+  .guestBanner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .actions {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1;
+    min-width: auto;
+  }
+
+  .imagePreviewGrid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .fileInputLabel {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Location Autocomplete Input - ЧЕРНЫЙ ТЕКСТ */
+.locationAddress {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.locationAutocompleteInput {
+  width: 100%;
+  padding: 10px 13px 10px 45px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.locationAutocompleteInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.locationAutocompleteInputIcon {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
+.predictionsRoot {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  background-color: white !important;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin-top: 4px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 300px;
+  overflow-y: auto;
+  padding-bottom: 72px;
+}
+
+.validLocation {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+

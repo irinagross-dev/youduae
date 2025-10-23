@@ -1,0 +1,74 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  /* Dimensions */
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+
+  @media (--viewportMedium) {
+    padding-top: 2px;
+  }
+}
+
+.error {
+  color: var(--colorFail);
+}
+
+.input {
+  flex-shrink: 0;
+  width: 100%;
+  margin-bottom: 24px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 32px;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  margin-bottom: 24px;
+
+  @media (--viewportLarge) {
+    margin-top: 100px;
+  }
+}
+
+.backButton {
+  flex: 0 0 auto;
+  min-width: 120px;
+
+  @media (--viewportLarge) {
+    width: 150px;
+  }
+}
+
+.submitButton {
+  flex: 1;
+  background-color: #4caf50;
+  border-color: #4caf50;
+
+  &:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+  }
+
+  &:focus {
+    background-color: #45a049;
+    border-color: #45a049;
+  }
+
+  &:disabled {
+    background-color: #a5d6a7;
+    border-color: #a5d6a7;
+  }
+
+  @media (--viewportLarge) {
+    width: 241px;
+  }
+}
