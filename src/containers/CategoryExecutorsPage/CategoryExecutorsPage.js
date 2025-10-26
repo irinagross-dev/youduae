@@ -5,6 +5,7 @@ import { Page, LayoutSingleColumn, NamedLink, Avatar, VerificationBadge } from '
 import TopbarContainer from '../TopbarContainer/TopbarContainer';
 import FooterContainer from '../FooterContainer/FooterContainer';
 import { getCategoryLabel, SERVICE_CATEGORIES } from '../../config/serviceCategories';
+import { searchExecutors } from '../../util/api';
 import css from './CategoryExecutorsPage.module.css';
 
 /**
@@ -31,13 +32,7 @@ const CategoryExecutorsPage = () => {
 
     console.log('🔍 Fetching executors for category:', categoryId);
 
-    fetch(`/api/search-executors?category=${categoryId}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch executors');
-        }
-        return response.json();
-      })
+    searchExecutors(categoryId)
       .then(data => {
         console.log('✅ Received executors:', data);
         setExecutors(data.data || []);
@@ -45,7 +40,7 @@ const CategoryExecutorsPage = () => {
       })
       .catch(err => {
         console.error('❌ Error fetching executors:', err);
-        setError(err.message);
+        setError(err.message || 'Failed to fetch executors');
         setLoading(false);
       });
   }, [categoryId, categoryExists]);

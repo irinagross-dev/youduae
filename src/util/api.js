@@ -187,6 +187,19 @@ export const transitionPrivileged = body => {
   return post('/api/transition-privileged', body);
 };
 
+// Search executors by service category
+//
+// This endpoint returns a list of Customer users (executors) who provide
+// services in the specified category. The response includes user info,
+// reviews count, and average rating.
+//
+// See `server/api/search-executors.js` for implementation details.
+export const searchExecutors = category => {
+  return get(`/api/search-executors?category=${category}`, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+
 // Query offers (transactions) for a specific listing
 // This uses the backend to query transactions, avoiding auth issues on client
 export const queryOffers = listingId => {
