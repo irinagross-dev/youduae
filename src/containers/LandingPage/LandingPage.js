@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import css from './LandingPage.module.css';
 import TopbarCustom from '../../containers/TopbarCustom/TopbarCustom'; // 👈 импортируем топбар
 import FooterCustom from '../FooterCustom/FooterCustom';
 
 const LandingPage = () => {
+  const history = useHistory();
+  const [taskTitle, setTaskTitle] = useState('');
+
+  const handleSearchClick = (e) => {
+    e.preventDefault();
+    console.log('🎯 Landing Page - "Найти" clicked with title:', taskTitle);
+    
+    // Redirect to GuestListingWizard with title as query parameter
+    if (taskTitle && taskTitle.trim()) {
+      history.push({
+        pathname: '/new',
+        search: `?title=${encodeURIComponent(taskTitle.trim())}`,
+      });
+    } else {
+      // If no title, just redirect to wizard
+      history.push('/new');
+    }
+  };
+
   return (
     <div className={css.shell}>
       {/* --- TOP BAR --- */}
@@ -28,9 +48,20 @@ const LandingPage = () => {
         {/* --- SEARCH LINE --- */}
         <div className={css.searchLine}>
           <div className={css.search}>
-            <span className={css.placeholder}>Услуга или специалист</span>
+            <input
+              type="text"
+              className={css.searchInput}
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+              placeholder="Услуга или специалист"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearchClick(e);
+                }
+              }}
+            />
           </div>
-          <a href="/s" className={css.btnFind}>Найти</a>
+          <button onClick={handleSearchClick} className={css.btnFind}>Найти</button>
         </div>
 
         {/* --- КАТЕГОРИИ УСЛУГ / ЗАГОЛОВОК И ПОДЗАГОЛОВОК --- */}

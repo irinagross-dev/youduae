@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FormattedMessage } from '../../util/reactIntl';
 import { Page, LayoutSingleColumn, PrimaryButton, SecondaryButton } from '../../components';
 import TopbarContainer from '../TopbarContainer/TopbarContainer';
@@ -10,6 +10,7 @@ import {
   saveImagesToStorage,
 } from '../../util/guestListingStorage';
 import LocationAutocompleteInputImpl from '../../components/LocationAutocompleteInput/LocationAutocompleteInputImpl';
+import { parse } from '../../util/urlHelpers';
 
 import css from './GuestListingWizard.module.css';
 
@@ -25,6 +26,7 @@ const STEP_ORDER = [STEPS.TITLE, STEPS.DETAILS, STEPS.LOCATION, STEPS.PRICING, S
 
 const GuestListingWizard = () => {
   const history = useHistory();
+  const location = useLocation();
   const config = useConfiguration();
   
   // NOTE: This component is only shown to unauthenticated users via NewListingPageRouter
@@ -53,9 +55,17 @@ const GuestListingWizard = () => {
   // Загружаем сохраненные данные при монтировании
   useEffect(() => {
     const savedData = getGuestListingData();
+    
+    // Get title from URL query parameter
+    const queryParams = parse(location.search);
+    const titleFromUrl = queryParams.title || '';
+    
+    console.log('🎯 GuestListingWizard - URL params:', queryParams);
+    console.log('🎯 GuestListingWizard - Title from URL:', titleFromUrl);
+    
     if (savedData) {
       setFormData({
-        title: savedData.title || '',
+        title: titleFromUrl || savedData.title || '',  // URL title has priority
         description: savedData.description || '',
         category: savedData.category || '',
         subcategory: savedData.subcategory || '',
@@ -73,8 +83,14 @@ const GuestListingWizard = () => {
           setAvailableSubcategories(selectedCategory.subcategories);
         }
       }
+    } else if (titleFromUrl) {
+      // If no saved data but there is title from URL
+      setFormData(prev => ({
+        ...prev,
+        title: titleFromUrl,
+      }));
     }
-  }, [categories]);
+  }, [categories, location.search]);
 
   // Сохраняем данные при каждом изменении
   useEffect(() => {
