@@ -6,7 +6,7 @@
  * Возвращает список пользователей типа Customer с отзывами и статистикой
  */
 
-const sharetribeSdk = require('sharetribe-flex-sdk');
+const sharetribeIntegrationSdk = require('sharetribe-flex-integration-sdk');
 
 module.exports = (req, res) => {
   const { category } = req.query;
@@ -15,7 +15,8 @@ module.exports = (req, res) => {
     return res.status(400).json({ error: 'Category parameter is required' });
   }
 
-  const sdk = sharetribeSdk.createInstance({
+  // Integration SDK для поиска пользователей (требует clientSecret)
+  const integrationSdk = sharetribeIntegrationSdk.createInstance({
     clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
     clientSecret: process.env.SHARETRIBE_SDK_CLIENT_SECRET,
   });
@@ -23,22 +24,11 @@ module.exports = (req, res) => {
   console.log('🔍 Searching executors for category:', category);
 
   // Ищем пользователей с указанной категорией в publicData.serviceCategories
-  sdk.users
+  integrationSdk.users
     .query({
-      // Фильтруем по категории услуг
-      pub_serviceCategories: category,
+      // Фильтруем по категории услуг (meta_ prefix для publicData)
+      meta_serviceCategories: category,
       include: ['profileImage'],
-      'fields.user': [
-        'profile.displayName',
-        'profile.abbreviatedName',
-        'profile.publicData',
-        'profile.metadata',
-        'createdAt',
-      ],
-      'fields.image': [
-        'variants.square-small',
-        'variants.square-small2x',
-      ],
       perPage: 100, // Максимум результатов
     })
     .then(response => {
@@ -49,9 +39,9 @@ module.exports = (req, res) => {
 
       // Для каждого пользователя получаем отзывы
       const userPromises = users.map(user => {
-        return sdk.reviews
+        return integrationSdk.reviews
           .query({
-            subject_id: user.id.uuid,
+            subjectId: user.id.uuid,
             state: 'public',
             perPage: 100,
           })
