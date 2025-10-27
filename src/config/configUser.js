@@ -38,7 +38,7 @@ import { getCategoryEnumOptions } from './serviceCategories';
  *   (optional)                       data is relevant and should be added.
  */
 export const userFields = [
-  // ========== КАТЕГОРИИ УСЛУГ (только для Customer - исполнителей) ==========
+  // ========== КАТЕГОРИИ УСЛУГ (только для Provider - исполнителей) ==========
   {
     key: 'serviceCategories',
     scope: 'public',
@@ -57,7 +57,7 @@ export const userFields = [
     },
     userTypeConfig: {
       limitToUserTypeIds: true,
-      userTypeIds: ['customer'], // Только для исполнителей
+      userTypeIds: ['provider'], // ⚠️ Исполнитель = provider (НЕТ прав создавать листинги)
     },
   },
 ];
@@ -67,17 +67,18 @@ export const userFields = [
 /////////////////////////////////////
 /**
  * Два типа пользователей в нашем маркетплейсе:
- * - customer: Исполнитель (предоставляет услуги)
- * - provider: Заказчик (создает задания)
+ * ⚠️ ВАЖНО: В Sharetribe 'customer' = тот, кто создает листинги (имеет post-listings право)
+ * - customer: Заказчик (создает задания, имеет права post-listings)
+ * - provider: Исполнитель (откликается на задания, НЕТ прав post-listings)
  */
 
 export const userTypes = [
   {
-    userType: 'customer',
+    userType: 'provider',  // ← Исполнитель (НЕТ прав создавать задания)
     label: 'Стать исполнителем',
   },
   {
-    userType: 'provider',
+    userType: 'customer',  // ← Заказчик (ЕСТЬ права создавать задания)
     label: 'Стать заказчиком',
   },
 ];
