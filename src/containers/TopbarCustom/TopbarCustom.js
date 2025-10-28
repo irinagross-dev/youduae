@@ -37,7 +37,7 @@ const TopbarCustom = (props) => {
     userRoles,
     isCustomer,
     isProvider,
-    showManageListings: isProvider
+    showManageListings: userRoles.customer  // ✅ "customer" role = can create listings
   });
 
   // Обработчик для кнопки "Войти"
@@ -71,12 +71,12 @@ const TopbarCustom = (props) => {
           </MenuLabel>
           <MenuContent className={css.profileMenuContent}>
             <MenuItem key="inbox">
-              <NamedLink name="InboxPage" params={{ tab: isProvider ? 'sales' : 'orders' }} className={css.menuLink}>
+              <NamedLink name="InboxPage" params={{ tab: isCustomer ? 'sales' : 'orders' }} className={css.menuLink}>
                 <FormattedMessage id="TopbarDesktop.inbox" />
               </NamedLink>
             </MenuItem>
-            {/* "Мои задания" показываем ТОЛЬКО для Provider (заказчиков), Customer (исполнители) не создают задания */}
-            {isProvider && (
+            {/* "Мои задания" показываем ТОЛЬКО для isCustomer (роль "customer" = ЗАКАЗЧИК = может создавать листинги) */}
+            {isCustomer && (
               <MenuItem key="manage-listings">
                 <NamedLink name="ManageListingsPage" className={css.menuLink}>
                   <FormattedMessage id="TopbarDesktop.yourListingsLink" />
@@ -137,10 +137,23 @@ const TopbarCustom = (props) => {
 
         {/* Правая секция: единый блок с навигацией */}
         {isAuthenticated ? (
-          /* Для авторизованных: разные кнопки для Customer и Provider */
+          /* Для авторизованных: разные кнопки для Заказчика и Исполнителя */
           <nav className={css.rightSection} aria-label="Главная навигация">
             {isCustomer ? (
-              /* Для Customer */
+              /* ✅ isCustomer = true → роль "customer" → МОЖЕТ создавать листинги → ЗАКАЗЧИК */
+              <>
+                <NamedLink name="NewListingPage" className={css.navLinkUnified}>
+                  <FormattedMessage id="TopbarDesktop.createListing" defaultMessage="Создать задание" />
+                </NamedLink>
+                <NamedLink name="ManageListingsPage" className={css.navLinkUnified}>
+                  <FormattedMessage id="TopbarDesktop.yourListingsLink" defaultMessage="Мои задания" />
+                </NamedLink>
+                <NamedLink name="InboxPage" params={{ tab: 'sales' }} className={css.navLinkUnified}>
+                  <FormattedMessage id="TopbarDesktop.inbox" defaultMessage="Входящие" />
+                </NamedLink>
+              </>
+            ) : (
+              /* ✅ isCustomer = false → роль "provider" → предоставляет услуги → ИСПОЛНИТЕЛЬ */
               <>
                 <NamedLink name="SearchPage" className={css.navLinkUnified}>
                   <FormattedMessage id="TopbarDesktop.findTasks" defaultMessage="Найти задания" />
@@ -153,19 +166,6 @@ const TopbarCustom = (props) => {
                   <FormattedMessage id="TopbarDesktop.myReviews" defaultMessage="Мои отзывы" />
                 </NamedLink>
                 <NamedLink name="InboxPage" params={{ tab: 'orders' }} className={css.navLinkUnified}>
-                  <FormattedMessage id="TopbarDesktop.inbox" defaultMessage="Входящие" />
-                </NamedLink>
-              </>
-            ) : (
-              /* Для Provider */
-              <>
-                <NamedLink name="NewListingPage" className={css.navLinkUnified}>
-                  <FormattedMessage id="TopbarDesktop.createListing" defaultMessage="Создать задание" />
-                </NamedLink>
-                <NamedLink name="ManageListingsPage" className={css.navLinkUnified}>
-                  <FormattedMessage id="TopbarDesktop.yourListingsLink" defaultMessage="Мои задания" />
-                </NamedLink>
-                <NamedLink name="InboxPage" params={{ tab: 'sales' }} className={css.navLinkUnified}>
                   <FormattedMessage id="TopbarDesktop.inbox" defaultMessage="Входящие" />
                 </NamedLink>
               </>

@@ -223,9 +223,9 @@ export const showCreateListingLinkForUser = (config, currentUser) => {
   const currentUserTypeConfig = getCurrentUserTypeConfig(config, currentUser);
 
   // CRITICAL BUSINESS LOGIC:
-  // ⚠️ NEW ROLE MAPPING (after fixing userType IDs):
-  // - userType 'provider' (Исполнитель) → roles: {customer: false, provider: true} → CANNOT create listings
-  // - userType 'customer' (Заказчик) → roles: {customer: true, provider: false} → CAN create listings
+  // ⚠️ FINAL ROLE MAPPING (matching Console permissions):
+  // - userType 'provider' (Заказчик) → roles: {customer: true, provider: false} → CAN create listings
+  // - userType 'customer' (Исполнитель) → roles: {customer: false, provider: true} → CANNOT create listings
   const userRoles = getCurrentUserTypeRoles(config, currentUser);
   
   // User without 'customer' role CANNOT create listings
