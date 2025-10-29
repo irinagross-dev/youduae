@@ -17,7 +17,7 @@
    :to :state/declined,
    :privileged? true}
   {:name :transition/complete,
-   :actor :actor.role/customer,
+   :actor :actor.role/provider,
    :actions [],
    :from :state/accepted,
    :to :state/completed}
