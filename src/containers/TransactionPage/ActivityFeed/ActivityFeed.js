@@ -27,10 +27,11 @@ const MIN_LENGTH_FOR_LONG_WORDS = 20;
  * @param {Object} props - The props
  * @param {propTypes.message} props.message - The message
  * @param {string} props.formattedDate - The formatted date
+ * @param {Object} props.intl - The intl object for translations
  * @returns {JSX.Element} The Message component
  */
 const Message = props => {
-  const { message, formattedDate } = props;
+  const { message, formattedDate, intl } = props;
   const content = richText(message.attributes.content, {
     linkify: true,
     longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
@@ -43,7 +44,7 @@ const Message = props => {
       <Avatar className={css.avatar} user={message.sender} />
       <div>
         <div className={css.messageHeader}>
-          <UserDisplayName user={message.sender} />
+          <UserDisplayName user={message.sender} intl={intl} />
           <VerificationBadge isVerified={senderVerified} />
         </div>
         <p className={css.messageContent}>{content}</p>
@@ -266,7 +267,7 @@ export const ActivityFeed = props => {
     const messageComponent = isOwnMessage ? (
       <OwnMessage message={message} formattedDate={formattedDate} />
     ) : (
-      <Message message={message} formattedDate={formattedDate} />
+      <Message message={message} formattedDate={formattedDate} intl={intl} />
     );
 
     return (
