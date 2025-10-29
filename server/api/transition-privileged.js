@@ -1,9 +1,8 @@
 const {
+  getTrustedSdk,
   handleError,
   serialize,
 } = require('../api-util/sdk');
-
-const sharetribeIntegrationSdk = require('sharetribe-flex-integration-sdk');
 
 module.exports = (req, res) => {
   const { isSpeculative, orderData, bodyParams, queryParams } = req.body;
@@ -15,17 +14,8 @@ module.exports = (req, res) => {
   // Просто используем пустой массив
   const lineItems = [];
 
-  // ✅ ИСПОЛЬЗУЕМ INTEGRATION SDK для реального privileged API
-  // (обходит actor restrictions в процессе)
-  const integrationSdk = sharetribeIntegrationSdk.createInstance({
-    clientId: process.env.REACT_APP_SHARETRIBE_SDK_CLIENT_ID,
-    clientSecret: process.env.SHARETRIBE_SDK_CLIENT_SECRET,
-  });
-
-  console.log('🔍 transition-privileged: using Integration SDK');
-
-  Promise.resolve(integrationSdk)
-    .then(sdk => {
+  getTrustedSdk(req)
+    .then(trustedSdk => {
       // Omit listingId from params (transitions don't need it, transaction already has it)
       const { listingId, ...restParams } = bodyParams?.params || {};
 
@@ -45,9 +35,9 @@ module.exports = (req, res) => {
       }));
 
       if (isSpeculative) {
-        return sdk.transactions.transitionSpeculative(body, queryParams);
+        return trustedSdk.transactions.transitionSpeculative(body, queryParams);
       }
-      return sdk.transactions.transition(body, queryParams);
+      return trustedSdk.transactions.transition(body, queryParams);
     })
     .then(apiResponse => {
       const { status, statusText, data } = apiResponse;
