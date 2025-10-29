@@ -637,12 +637,30 @@ export const AuthenticationPageComponent = props => {
     console.log('✅ User authenticated with createListing intent - redirecting to /l/new');
     return <Redirect to="/l/new?intent=createListing" />;
   } else if (shouldRedirectToFrom) {
+    // Check if user is executor trying to access /listings
+    const userTypeFromProfile = currentUser?.attributes?.profile?.publicData?.userType;
+    const isExecutor = userTypeFromProfile === 'customer';
+    
+    // If executor (customer) is being redirected to /listings, override and go to profile settings
+    if (isExecutor && from === '/listings') {
+      console.log('✅ Executor registered, overriding /listings redirect - going to profile settings');
+      return <NamedRedirect name="ContactDetailsPage" />;
+    }
+    
     // Already authenticated, redirect back to the page the user tried to access
+    console.log('✅ Redirecting to "from" page:', from);
     return <Redirect to={from} />;
   } else if (shouldRedirectToLandingPage) {
     // Already authenticated, redirect based on user type
     // Get user type from currentUser
     const userTypeFromProfile = currentUser?.attributes?.profile?.publicData?.userType;
+    
+    console.log('🔀 AuthenticationPage - Post-signup redirect check:', {
+      currentUserId: currentUser?.id?.uuid,
+      userTypeFromProfile,
+      hasPublicData: !!currentUser?.attributes?.profile?.publicData,
+      publicData: currentUser?.attributes?.profile?.publicData,
+    });
     
     // ✅ РОЛИ:
     // - userType 'customer' (Исполнитель) → профиль-настройки
@@ -653,7 +671,7 @@ export const AuthenticationPageComponent = props => {
       return <NamedRedirect name="ContactDetailsPage" />;
     } else {
       // Заказчик или неизвестный тип → редирект на главную
-      console.log('✅ Client registered - redirecting to landing page');
+      console.log('✅ Client/Unknown registered - redirecting to landing page, userType:', userTypeFromProfile);
       return <NamedRedirect name="LandingPage" />;
     }
   } else if (show404) {
