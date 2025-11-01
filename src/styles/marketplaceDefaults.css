@@ -209,6 +209,7 @@ body {
   font-optical-sizing: auto;
 
   background-color: var(--colorGrey50);
+  background-color: #fff !important;
 }
 
 ::selection {
@@ -816,7 +817,7 @@ textarea {
 
 .marketplaceSmallFontStyles {
   font-weight: var(--fontWeightMedium);
-  font-size: 14px;
+  font-size: 12px;
   line-height: 24px;
 }
 

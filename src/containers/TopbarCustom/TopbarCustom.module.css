@@ -1,10 +1,10 @@
 /* === ОБЩЕЕ ОФОРМЛЕНИЕ ХЕДЕРА === */
 .wrapper {
-  position: fixed;     /* или absolute, если внутри shell */
+  position: sticky;     /* или absolute, если внутри shell */
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;        /* выше всего */
+  z-index: 1000;        /* выше всего */
   background: transparent; /* если должен быть прозрачным */
 }
 
