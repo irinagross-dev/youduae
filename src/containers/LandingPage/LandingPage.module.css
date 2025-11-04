@@ -5,6 +5,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-top: -90px;
+  
 }
 
 .page {
@@ -15,6 +17,7 @@
   overflow: visible;
   margin: 0;
   padding: 0; /* ← важно */
+  
 }
 
 .container {
@@ -23,6 +26,7 @@
   margin: 0 auto;
   padding: 0 0px 50px;
   position: relative;
+
 }
 
 /* фоновые декоры */
@@ -726,6 +730,7 @@
  
 /* адаптив 1023-768 */
 @media (max-width: 1023px) {
+  .shell { margin-top: -50px; }
   .page { min-height: 3400px;}
   /* смена текста */
   .hero { display: flex; flex-direction: column; width: 100%; align-items: center; margin: 0 auto; padding: 90px 0 70px; }
