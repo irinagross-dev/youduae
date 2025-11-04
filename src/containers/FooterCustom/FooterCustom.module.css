@@ -196,6 +196,12 @@
   letter-spacing: -0.03em;
 }
 
+.policyLinks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .policy {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
@@ -205,6 +211,13 @@
   transition: color .2s ease;
 }
 .policy:hover { color: #909090; text-decoration: none; }
+
+.policySeparator {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #909090;
+  letter-spacing: -0.03em;
+}
 
 /* ---------- АДАПТИВ ---------- */
 @media (max-width: 1279px) {
@@ -240,6 +253,16 @@
     align-items: flex-start;
     gap: 8px;
     position: static;
+  }
+  
+  .policyLinks {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .policySeparator {
+    display: none;
   }
 }
 @media (max-width: 480px) {

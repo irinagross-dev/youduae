@@ -27,7 +27,7 @@ const FooterCustom = () => {
           <NamedLink name="SearchPage" className={css.col1Item}>
             <FormattedMessage id="TopbarDesktop.searchLink" />
           </NamedLink>
-          <NamedLink name="PrivacyPolicyPage" className={css.col1Item}>
+          <NamedLink name="CMSPage" params={{ pageId: 'about' }} className={css.col1Item}>
             <FormattedMessage id="FooterCustom.about" />
           </NamedLink>
         </div>
@@ -68,9 +68,15 @@ const FooterCustom = () => {
           <div className={css.copyright}>
             <FormattedMessage id="FooterCustom.copyright" values={{ year }} />
           </div>
-          <NamedLink name="PrivacyPolicyPage" className={css.policy}>
-            <FormattedMessage id="FooterCustom.policy" />
-          </NamedLink>
+          <div className={css.policyLinks}>
+            <NamedLink name="TermsOfServicePage" className={css.policy}>
+              <FormattedMessage id="FooterCustom.termsOfService" />
+            </NamedLink>
+            <span className={css.policySeparator}>|</span>
+            <NamedLink name="PrivacyPolicyPage" className={css.policy}>
+              <FormattedMessage id="FooterCustom.policy" />
+            </NamedLink>
+          </div>
         </div>
       </div>
     </footer>
