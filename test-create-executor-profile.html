@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Создать профиль исполнителя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 { color: #333; }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #45a049; }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Создать профиль исполнителя</h1>
+    
+    <p>
+        <strong>Инструкция:</strong><br>
+        1. Войдите на сайт как Customer (исполнитель)<br>
+        2. Нажмите кнопку ниже<br>
+        3. Система автоматически создаст профильные листинги для всех ваших категорий услуг
+    </p>
+
+    <button onclick="createProfile()">Создать мой профиль исполнителя</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function createProfile() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>⏳ Создание профиля...</p>';
+            resultDiv.className = 'result';
+
+            try {
+                const response = await fetch('http://localhost:3500/api/create-my-executor-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include', // Важно! Включить cookies для авторизации
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Успешно!</h3>
+                        <p>${data.message}</p>
+                        <p><strong>Пользователь:</strong> ${data.user.displayName}</p>
+                        <h4>Созданные листинги:</h4>
+                        <ul>
+                            ${data.listings.map(l => `
+                                <li>
+                                    <strong>${l.category}</strong>: 
+                                    ${l.status === 'created' ? `✅ Создан (ID: ${l.listingId})` : `❌ Ошибка: ${l.error}`}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                } else {
+                    throw new Error(data.error || data.message || 'Unknown error');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Ошибка</h3>
+                    <p>${error.message}</p>
+                    <p><strong>Совет:</strong> Убедитесь, что вы вошли на сайт как Customer (исполнитель)</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
