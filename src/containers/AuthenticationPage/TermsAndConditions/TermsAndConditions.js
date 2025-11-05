@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { requiredFieldArrayCheckbox } from '../../../util/validators';
-import { FieldCheckboxGroup } from '../../../components';
+import { FieldCheckboxGroup, ExternalLink } from '../../../components';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 
@@ -35,27 +35,25 @@ const TermsAndConditions = props => {
   };
 
   const termsLink = (
-    <span
+    <a
+      href="/terms-of-service"
       className={css.termsLink}
-      onClick={handleClick(onOpenTermsOfService)}
-      role="button"
-      tabIndex="0"
-      onKeyUp={handleKeyUp(onOpenTermsOfService)}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <FormattedMessage id="AuthenticationPage.termsAndConditionsTermsLinkText" />
-    </span>
+    </a>
   );
 
   const privacyLink = (
-    <span
+    <a
+      href="/privacy-policy"
       className={css.privacyLink}
-      onClick={handleClick(onOpenPrivacyPolicy)}
-      role="button"
-      tabIndex="0"
-      onKeyUp={handleKeyUp(onOpenPrivacyPolicy)}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <FormattedMessage id="AuthenticationPage.termsAndConditionsPrivacyLinkText" />
-    </span>
+    </a>
   );
 
   return (

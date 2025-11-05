@@ -221,6 +221,21 @@ const TopbarCustom = props => {
           <FormattedMessage id="TopbarDesktop.inbox" />
         </NamedLink>
       </li>
+      <li>
+        <NamedLink
+          name="ProfilePage"
+          params={{ id: currentUser?.id?.uuid }}
+          className={css.burgerLink}
+          onClick={closeBurger}
+        >
+          <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
+        </NamedLink>
+      </li>
+      <li>
+        <NamedLink name="ContactDetailsPage" className={css.burgerLink} onClick={closeBurger}>
+          <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
+        </NamedLink>
+      </li>
       <li className={css.burgerDivider} />
       <li>
         <button type="button" className={css.burgerSecondaryBtn} onClick={handleLogout}>
@@ -249,6 +264,21 @@ const TopbarCustom = props => {
       <li>
         <NamedLink name="InboxPage" params={{ tab: 'sales' }} className={css.burgerLink} onClick={closeBurger}>
           <FormattedMessage id="TopbarDesktop.inbox" />
+        </NamedLink>
+      </li>
+      <li>
+        <NamedLink
+          name="ProfilePage"
+          params={{ id: currentUser?.id?.uuid }}
+          className={css.burgerLink}
+          onClick={closeBurger}
+        >
+          <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
+        </NamedLink>
+      </li>
+      <li>
+        <NamedLink name="ContactDetailsPage" className={css.burgerLink} onClick={closeBurger}>
+          <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
         </NamedLink>
       </li>
       <li className={css.burgerDivider} />

@@ -1324,5 +1324,20 @@
   "FooterCustom.supportBtn": "Contact Support",
   "FooterCustom.supportNote": "*We respond 24/7",
   "FooterCustom.policy": "Information Processing and Protection Policy",
-  "FooterCustom.copyright": "© {year}. All rights reserved."
+  "FooterCustom.copyright": "© {year}. All rights reserved.",
+  "ServiceCategory.title": "Service Categories",
+  "ServiceCategory.selectServices": "Choose which services you provide",
+  "ServiceCategory.requiredMessage": "Please select at least one service category",
+  "ServiceCategory.placeholder": "Select categories...",
+  "ServiceCategory.construction": "Construction and Repair",
+  "ServiceCategory.beauty": "Beauty and Health",
+  "ServiceCategory.tutoring": "Tutoring and Education",
+  "ServiceCategory.cleaning": "Cleaning and Home Help",
+  "ServiceCategory.legal": "Legal and Accounting Services",
+  "ServiceCategory.appliances": "Appliance Installation",
+  "ServiceCategory.media": "Photo, Video, Audio",
+  "ServiceCategory.courier": "Courier Services",
+  "ServiceCategory.moving": "Moving and Transportation",
+  "ServiceCategory.techRepair": "Digital Tech Repair",
+  "ServiceCategory.auto": "Automotive Services"
 }

@@ -1360,5 +1360,20 @@
   "FooterCustom.supportBtn": "Написать в поддержку",
   "FooterCustom.supportNote": "*отвечаем круглосуточно",
   "FooterCustom.policy": "Политика обработки и защиты информации",
-  "FooterCustom.copyright": "© {year}. Все права защищены."
+  "FooterCustom.copyright": "© {year}. Все права защищены.",
+  "ServiceCategory.title": "Категории услуг",
+  "ServiceCategory.selectServices": "Выберите какие услуги Вы предоставляете",
+  "ServiceCategory.requiredMessage": "Выберите хотя бы одну категорию услуг",
+  "ServiceCategory.placeholder": "Выберите категории...",
+  "ServiceCategory.construction": "Строительство и ремонт",
+  "ServiceCategory.beauty": "Красота и здоровье",
+  "ServiceCategory.tutoring": "Репетиторы и обучение",
+  "ServiceCategory.cleaning": "Уборка и помощь в доме",
+  "ServiceCategory.legal": "Юридическая и бухгалтерская помощь",
+  "ServiceCategory.appliances": "Установка бытовой техники",
+  "ServiceCategory.media": "Фото, видео, аудио",
+  "ServiceCategory.courier": "Курьерские услуги",
+  "ServiceCategory.moving": "Грузоперевозки",
+  "ServiceCategory.techRepair": "Ремонт цифровой техники",
+  "ServiceCategory.auto": "Автомобильные услуги"
 }

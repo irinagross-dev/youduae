@@ -6,7 +6,7 @@
 //       To use this built-in configuration, you need to change the overwrite from configHelper.js
 //       (E.g. use mergeDefaultTypesAndFieldsForDebugging func)
 
-import { getCategoryEnumOptions } from './serviceCategories';
+import { SERVICE_CATEGORIES } from './serviceCategories';
 
 /**
  * Configuration options for user fields (custom extended data fields):
@@ -43,18 +43,30 @@ export const userFields = [
     key: 'serviceCategories',
     scope: 'public',
     schemaType: 'multi-enum',
-    enumOptions: getCategoryEnumOptions('ru'), // Используем русские названия
+    enumOptions: [
+      { option: 'construction', label: 'ServiceCategory.construction' },
+      { option: 'beauty', label: 'ServiceCategory.beauty' },
+      { option: 'tutoring', label: 'ServiceCategory.tutoring' },
+      { option: 'cleaning', label: 'ServiceCategory.cleaning' },
+      { option: 'legal', label: 'ServiceCategory.legal' },
+      { option: 'appliances', label: 'ServiceCategory.appliances' },
+      { option: 'media', label: 'ServiceCategory.media' },
+      { option: 'courier', label: 'ServiceCategory.courier' },
+      { option: 'moving', label: 'ServiceCategory.moving' },
+      { option: 'tech-repair', label: 'ServiceCategory.techRepair' },
+      { option: 'auto', label: 'ServiceCategory.auto' },
+    ],
     showConfig: {
-      label: 'Категории услуг',
+      label: 'ServiceCategory.title',
       displayInProfile: true,
       unselectedOptions: false, // Скрываем невыбранные категории
     },
     saveConfig: {
-      label: 'Выберите какие услуги Вы предоставляете',
+      label: 'ServiceCategory.selectServices',
       displayInSignUp: true,
       isRequired: true,
-      requiredMessage: 'Выберите хотя бы одну категорию услуг',
-      placeholderMessage: 'Выберите категории...',
+      requiredMessage: 'ServiceCategory.requiredMessage',
+      placeholderMessage: 'ServiceCategory.placeholder',
     },
     userTypeConfig: {
       limitToUserTypeIds: true,

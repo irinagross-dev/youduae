@@ -29,22 +29,46 @@ const CustomFieldEnum = props => {
   const { name, fieldConfig, defaultRequiredMessage, formId, intl } = props;
   const { enumOptions = [], saveConfig } = fieldConfig || {};
   const { placeholderMessage, isRequired, requiredMessage } = saveConfig || {};
+  
+  // Переводим requiredMessage если это translation key
+  const translatedRequiredMessage = requiredMessage && requiredMessage.includes('.')
+    ? intl.formatMessage({ id: requiredMessage, defaultMessage: requiredMessage })
+    : requiredMessage;
+  
   const validateMaybe = isRequired
-    ? { validate: required(requiredMessage || defaultRequiredMessage) }
+    ? { validate: required(translatedRequiredMessage || defaultRequiredMessage) }
     : {};
+    
+  // Переводим placeholder если это translation key
+  const translatedPlaceholder = placeholderMessage && placeholderMessage.includes('.')
+    ? intl.formatMessage({ id: placeholderMessage, defaultMessage: placeholderMessage })
+    : placeholderMessage;
+    
   const placeholder =
-    placeholderMessage ||
+    translatedPlaceholder ||
     intl.formatMessage({ id: 'CustomExtendedDataField.placeholderSingleSelect' });
-  const filterOptions = createFilterOptions(enumOptions);
+    
+  // Переводим labels в options если они translation keys
+  const filterOptions = createFilterOptions(enumOptions)?.map(opt => ({
+    ...opt,
+    label: opt.label && typeof opt.label === 'string' && opt.label.includes('.') 
+      ? intl.formatMessage({ id: opt.label, defaultMessage: opt.label })
+      : opt.label,
+  }));
 
   const label = getLabel(fieldConfig);
+  
+  // Переводим label если это translation key
+  const translatedLabel = label && label.includes('.') 
+    ? intl.formatMessage({ id: label, defaultMessage: label })
+    : label;
 
   return filterOptions ? (
     <FieldSelect
       className={css.customField}
       name={name}
       id={formId ? `${formId}.${name}` : name}
-      label={label}
+      label={translatedLabel}
       {...validateMaybe}
     >
       <option disabled value="">
@@ -63,21 +87,40 @@ const CustomFieldEnum = props => {
 };
 
 const CustomFieldMultiEnum = props => {
-  const { name, fieldConfig, defaultRequiredMessage, formId } = props;
+  const { name, fieldConfig, defaultRequiredMessage, formId, intl } = props;
   const { enumOptions = [], saveConfig } = fieldConfig || {};
   const { isRequired, requiredMessage } = saveConfig || {};
   const label = getLabel(fieldConfig);
+  
+  // Переводим requiredMessage если это translation key
+  const translatedRequiredMessage = requiredMessage && requiredMessage.includes('.')
+    ? intl.formatMessage({ id: requiredMessage, defaultMessage: requiredMessage })
+    : requiredMessage;
+  
   const validateMaybe = isRequired
-    ? { validate: nonEmptyArray(requiredMessage || defaultRequiredMessage) }
+    ? { validate: nonEmptyArray(translatedRequiredMessage || defaultRequiredMessage) }
     : {};
+
+  // Переводим label если это translation key
+  const translatedLabel = label && label.includes('.') 
+    ? intl.formatMessage({ id: label, defaultMessage: label })
+    : label;
+  
+  // Переводим labels в options если они translation keys
+  const translatedOptions = createFilterOptions(enumOptions)?.map(opt => ({
+    ...opt,
+    label: opt.label && opt.label.includes && opt.label.includes('.') 
+      ? intl.formatMessage({ id: opt.label, defaultMessage: opt.label })
+      : opt.label,
+  }));
 
   return enumOptions ? (
     <FieldCheckboxGroup
       className={css.customField}
       id={formId ? `${formId}.${name}` : name}
       name={name}
-      label={label}
-      options={createFilterOptions(enumOptions)}
+      label={translatedLabel}
+      options={translatedOptions}
       {...validateMaybe}
     />
   ) : null;

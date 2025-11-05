@@ -141,7 +141,7 @@ const LandingPage = () => {
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'tutors' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'tutoring' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconSchool}></span>
                   <span><FormattedMessage id="LandingPage.category.tutors" /></span>
@@ -169,7 +169,7 @@ const LandingPage = () => {
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'photo' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'media' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconCamera}></span>
                   <span><FormattedMessage id="LandingPage.category.photo" /></span>
@@ -183,14 +183,14 @@ const LandingPage = () => {
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'transport' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'moving' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconTruck}></span>
                   <span><FormattedMessage id="LandingPage.category.transport" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'electronics' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'tech-repair' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconSearch}></span>
                   <span><FormattedMessage id="LandingPage.category.electronics" /></span>
