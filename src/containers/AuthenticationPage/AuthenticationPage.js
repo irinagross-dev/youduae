@@ -224,14 +224,24 @@ export const AuthenticationForms = props => {
 
   const handleSubmitSignup = values => {
     const { userType, email, password, fname, lname, displayName, ...rest } = values;
-    const displayNameMaybe = displayName ? { displayName: displayName.trim() } : {};
+
+    // Sharetribe требует displayName в профиле. В hosted-конфигурации поле может быть скрыто,
+    // поэтому генерируем в fallback: "FirstName LastName".
+    const normalizedFirstName = fname ? fname.trim() : '';
+    const normalizedLastName = lname ? lname.trim() : '';
+    const normalizedDisplayName = displayName ? displayName.trim() : '';
+    const fallbackDisplayName = [normalizedFirstName, normalizedLastName]
+      .filter(Boolean)
+      .join(' ')
+      .trim();
+    const displayNameValue = normalizedDisplayName || fallbackDisplayName;
 
     const params = {
       email,
       password,
-      firstName: fname.trim(),
-      lastName: lname.trim(),
-      ...displayNameMaybe,
+      firstName: normalizedFirstName,
+      lastName: normalizedLastName,
+      ...(displayNameValue ? { displayName: displayNameValue } : {}),
       publicData: {
         userType,
         ...pickUserFieldsData(rest, 'public', userType, userFields),
