@@ -181,19 +181,21 @@ const TopbarDesktop = props => {
   const giveSpaceForSearch = customLinks == null || customLinks?.length === 0;
   const classes = classNames(rootClassName || css.root, className);
 
-  const inboxLinkMaybe = authenticatedOnClientSide ? (
-    <InboxLink notificationCount={notificationCount} inboxTab={inboxTab} />
-  ) : null;
+  const inboxLinkMaybe =
+    authenticatedOnClientSide && isAuthenticated ? (
+      <InboxLink notificationCount={notificationCount} inboxTab={inboxTab} />
+    ) : null;
 
-  const profileMenuMaybe = authenticatedOnClientSide ? (
-    <ProfileMenu
-      currentPage={currentPage}
-      currentUser={currentUser}
-      onLogout={onLogout}
-      showManageListingsLink={showCreateListingsLink}
-      inboxTab={inboxTab}
-    />
-  ) : null;
+  const profileMenuMaybe =
+    authenticatedOnClientSide && isAuthenticated ? (
+      <ProfileMenu
+        currentPage={currentPage}
+        currentUser={currentUser}
+        onLogout={onLogout}
+        showManageListingsLink={showCreateListingsLink}
+        inboxTab={inboxTab}
+      />
+    ) : null;
 
   // Проверяем роли пользователя
   // NOTE: Using ROLES instead of userType string for proper role detection
@@ -217,9 +219,12 @@ const TopbarDesktop = props => {
     mounted,
   });
   
-  // Для Исполнителей (provider): ВСЕГДА показываем "Найти задания"
-  // Исполнители должны искать задания, а не создавать их
-  const searchLinkForCustomer = authenticatedOnClientSide && isOnlyCustomer ? <SearchLink /> : null;
+  const canCreateListings = showCreateListingsLink === true;
+  const isSpecialist = !canCreateListings && isOnlyCustomer;
+
+  // Для исполнителей (не создают задания) показываем "Найти задания"
+  const searchLinkForCustomer =
+    authenticatedOnClientSide && isSpecialist ? <SearchLink /> : null;
   
   // Для неавторизованных: показываем "Найти задания"
   const searchLinkForGuest = !isAuthenticatedOrJustHydrated ? <SearchLink /> : null;
@@ -234,6 +239,15 @@ const TopbarDesktop = props => {
   });
   
   const loginLinkMaybe = isAuthenticatedOrJustHydrated ? null : <LoginLink />;
+
+  const manageListingsLinkMaybe =
+    authenticatedOnClientSide && canCreateListings ? (
+      <NamedLink className={css.topbarLink} name="ManageListingsPage">
+        <span className={css.topbarLinkLabel}>
+          <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+        </span>
+      </NamedLink>
+    ) : null;
   
   // Убрана форма поиска из топбара
   // const searchFormMaybe = isAuthenticated && showSearchForm ? (
@@ -271,20 +285,55 @@ const TopbarDesktop = props => {
 
       {/* Правая часть (buttonpart): Для специалистов + Создать задачу + Войти - из Figma */}
       <div className={css.rightSection}>
-        {/* Для специалистов - серая ссылка */}
-        <ForSpecialistsLink />
-        
-        {/* Создать задачу - для авторизованных Provider */}
-        <CustomLinksMenu
-          currentPage={currentPage}
-          customLinks={filteredCustomLinks}
-          intl={intl}
-          hasClientSideContentReady={authenticatedOnClientSide || !isAuthenticatedOrJustHydrated}
-          showCreateListingsLink={showCreateListingsLink}
-        />
-        
-        {/* Войти - желтая кнопка */}
-        {loginLinkMaybe}
+        {authenticatedOnClientSide && isAuthenticated ? (
+          canCreateListings ? (
+            <>
+              <CustomLinksMenu
+                currentPage={currentPage}
+                customLinks={filteredCustomLinks}
+                intl={intl}
+                hasClientSideContentReady={
+                  authenticatedOnClientSide || !isAuthenticatedOrJustHydrated
+                }
+                showCreateListingsLink={showCreateListingsLink}
+              />
+              {manageListingsLinkMaybe}
+              {inboxLinkMaybe}
+              {profileMenuMaybe}
+            </>
+          ) : (
+            <>
+              {searchLinkMaybe}
+              <ForSpecialistsLink />
+              <CustomLinksMenu
+                currentPage={currentPage}
+                customLinks={filteredCustomLinks}
+                intl={intl}
+                hasClientSideContentReady={
+                  authenticatedOnClientSide || !isAuthenticatedOrJustHydrated
+                }
+                showCreateListingsLink={false}
+              />
+              {inboxLinkMaybe}
+              {profileMenuMaybe}
+            </>
+          )
+        ) : (
+          <>
+            {searchLinkMaybe}
+            <ForSpecialistsLink />
+            <CustomLinksMenu
+              currentPage={currentPage}
+              customLinks={filteredCustomLinks}
+              intl={intl}
+              hasClientSideContentReady={
+                authenticatedOnClientSide || !isAuthenticatedOrJustHydrated
+              }
+              showCreateListingsLink={false}
+            />
+            {loginLinkMaybe}
+          </>
+        )}
       </div>
     </nav>
   );
