@@ -987,6 +987,15 @@ const restructureUserTypes = (hostedUserTypes = []) => {
   });
 };
 
+const appendMissingItems = (primary = [], fallback = [], key = 'key') => {
+  const existingKeys = new Set(primary.map(item => item?.[key]));
+  const missingItems = (fallback || []).filter(item => {
+    const itemKey = item?.[key];
+    return itemKey && !existingKeys.has(itemKey);
+  });
+  return [...primary, ...missingItems];
+};
+
 const restructureUserFields = hostedUserFields => {
   return (
     hostedUserFields?.map(userField => {
@@ -1156,11 +1165,20 @@ const mergeUserConfig = (hostedConfig, defaultConfigs) => {
   // ⚠️ ИСПОЛЬЗУЕМ ТОЛЬКО ЛОКАЛЬНЫЕ userTypes и userFields (иначе дубликаты из Console!)
   const userTypes = shouldMerge
     ? defaultUserTypes // ТОЛЬКО локальные!
-    : hostedUserTypes;
+    : appendMissingItems(hostedUserTypes, defaultUserTypes, 'userType');
 
   const userFields = shouldMerge
     ? defaultUserFields // ТОЛЬКО локальные!
-    : hostedUserFields;
+    : appendMissingItems(hostedUserFields, defaultUserFields, 'key');
+
+  if (process.env.NODE_ENV !== 'development') {
+    console.log('🔍 mergeUserConfig result', {
+      shouldMerge,
+      hostedUserTypesCount: hostedUserTypes.length,
+      defaultUserTypesCount: defaultUserTypes?.length || 0,
+      resultUserTypes: userTypes.map(ut => ut?.userType),
+    });
+  }
 
   // Валидация (и учёт типов пользователей для полей)
   const userTypesInUse = userTypes.map(ut => `${ut.userType}`);
