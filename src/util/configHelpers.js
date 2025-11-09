@@ -1117,24 +1117,20 @@ export const mergeListingConfig = (hostedConfig, defaultConfigs, categoriesInUse
     ...rest
   } = defaultConfigs.listing || {};
 
-  // В dev режиме ВСЕГДА используем локальные дефолты вместо hosted
-  // Это важно для тестирования кастомных процессов
-  const isDev = process.env.NODE_ENV === 'development';
-  
-  // КРИТИЧНО: В dev приоритет за локальными, в production - за hosted
-  // Для union второй массив имеет приоритет
-  const listingTypes = isDev
-    ? (defaultListingTypes.length > 0 ? defaultListingTypes : hostedListingTypes)
-    : (hostedListingTypes.length > 0 ? hostedListingTypes : defaultListingTypes);
+  // 📌 Критично: мы всегда используем локальную конфигурацию листингов.
+  // Hosted-конфиг в Console часто содержит дефолтный процесс Sharetribe (`default-inquiry`),
+  // что ломает кастомный процесс `assignment-flow-v3`.
+  // Поэтому отдаём приоритет локальным `configListing.js`.
+  const listingTypes =
+    defaultListingTypes.length > 0 ? defaultListingTypes : hostedListingTypes;
 
-  const listingFields = isDev
-    ? (defaultListingFields.length > 0 ? defaultListingFields : hostedListingFields)
-    : (hostedListingFields.length > 0 ? hostedListingFields : defaultListingFields);
+  const listingFields =
+    defaultListingFields.length > 0 ? defaultListingFields : hostedListingFields;
 
   const listingTypesInUse = listingTypes.map(lt => `${lt.listingType}`);
 
   console.log('🔍 mergeListingConfig:', {
-    isDev,
+    isDev: process.env.NODE_ENV === 'development',
     defaultListingTypes: defaultListingTypes.length,
     hostedListingTypes: hostedListingTypes.length,
     resultListingTypes: listingTypes.map(t => t.transactionType?.alias),
