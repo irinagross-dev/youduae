@@ -209,10 +209,21 @@ module.exports = (req, res) => {
       });
     })
     .catch(err => {
-        console.error('❌ Query error:', err.message);
+        const status = err?.status || err?.statusCode;
+        const data = err?.data || err?.response?.data;
+        const apiErrors = data?.errors || data;
+
+        console.error('❌ Query error:', {
+          message: err?.message,
+          status,
+          apiErrors,
+        });
+
       res.status(500).json({ 
           error: 'Query failed',
-          details: err.message,
+          details: err?.message,
+          status,
+          apiErrors,
         });
       });
   } catch (err) {
