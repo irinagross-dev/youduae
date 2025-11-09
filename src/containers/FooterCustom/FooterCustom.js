@@ -53,7 +53,7 @@ const FooterCustom = () => {
             </div>
             <a
               className={css.btnSupport}
-              href="https://t.me/Gross_Ai"
+              href="https://t.me/youdu_ae"
               target="_blank"
               rel="noopener noreferrer"
             >
