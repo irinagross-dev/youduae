@@ -321,11 +321,17 @@ Start-Process $ImageURL  # Откроет в браузере
 
 ### Если документы прошли проверку:
 
-#### Шаг 1: Откройте **Public data**
-В Edit user прокрутите до секции **Public data**.
+#### Шаг 1: Обновите **Profile metadata**
+В секции **Profile metadata** (тип — JSON) убедитесь, что есть булево поле:
 
-#### Шаг 2: Добавьте поле `isVerified`
-Добавьте или измените JSON:
+```
+Key: isVerified
+Type: Boolean
+Value: true
+```
+
+#### Шаг 2: Заполните **Public data**
+В секции **Public data** добавьте или измените JSON:
 
 ```json
 {

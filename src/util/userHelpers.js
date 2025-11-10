@@ -252,16 +252,15 @@ export const showCreateListingLinkForUser = (config, currentUser) => {
  * @returns {Object} { showPayoutDetails: Boolean, showPaymentMethods: boolean }
  */
 export const showPaymentDetailsForUser = (config, currentUser) => {
-  const currentUserTypeConfig = getCurrentUserTypeConfig(config, currentUser);
-  const { paymentMethods = true, payoutDetails = true } =
-    currentUserTypeConfig?.accountLinksVisibility || {};
+  if (!currentUser) {
+    return null;
+  }
 
-  return (
-    currentUser && {
-      showPayoutDetails: payoutDetails,
-      showPaymentMethods: paymentMethods,
-    }
-  );
+  // Business requirement: скрываем вкладки выплат и методов оплаты
+  return {
+    showPayoutDetails: false,
+    showPaymentMethods: false,
+  };
 };
 
 /**
