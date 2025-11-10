@@ -49,19 +49,28 @@ const DisplayNameMaybe = props => {
       }
     : {};
 
+  const heading = intl.formatMessage({
+    id: 'ProfileSettingsForm.displayNameHeading',
+  });
+  const hasHeading = heading && heading.trim().length > 0;
+  const labelMessage = intl.formatMessage({
+    id: 'ProfileSettingsForm.displayNameLabel',
+  });
+  const normalizedLabel = labelMessage && labelMessage.trim().length > 0 ? labelMessage : null;
+
   return (
     <div className={css.sectionContainer}>
-      <H4 as="h2" className={css.sectionTitle}>
-        <FormattedMessage id="ProfileSettingsForm.displayNameHeading" />
-      </H4>
+      {hasHeading ? (
+        <H4 as="h2" className={css.sectionTitle}>
+          {heading}
+        </H4>
+      ) : null}
       <FieldTextInput
         className={css.row}
         type="text"
         id="displayName"
         name="displayName"
-        label={intl.formatMessage({
-          id: 'ProfileSettingsForm.displayNameLabel',
-        })}
+        label={normalizedLabel || undefined}
         placeholder={intl.formatMessage({
           id: 'ProfileSettingsForm.displayNamePlaceholder',
         })}
@@ -183,6 +192,13 @@ class ProfileSettingsFormComponent extends Component {
           const bioPlaceholder = intl.formatMessage({
             id: 'ProfileSettingsForm.bioPlaceholder',
           });
+          const yourNameHeading = intl.formatMessage({
+            id: 'ProfileSettingsForm.yourName',
+          });
+          const hasYourNameHeading = yourNameHeading && yourNameHeading.trim().length > 0;
+          const normalizedBioLabel =
+            bioLabel && bioLabel.trim().length > 0 ? bioLabel : null;
+
 
           const uploadingOverlay =
             uploadInProgress || this.state.uploadDelay ? (
@@ -348,9 +364,11 @@ class ProfileSettingsFormComponent extends Component {
                 </div>
               </div>
               <div className={css.sectionContainer}>
-                <H4 as="h2" className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.yourName" />
-                </H4>
+                {hasYourNameHeading ? (
+                  <H4 as="h2" className={css.sectionTitle}>
+                    {yourNameHeading}
+                  </H4>
+                ) : null}
                 <div className={css.nameContainer}>
                   <FieldTextInput
                     className={css.firstName}
@@ -383,7 +401,7 @@ class ProfileSettingsFormComponent extends Component {
                   type="textarea"
                   id="bio"
                   name="bio"
-                  label={bioLabel}
+                  label={normalizedBioLabel || undefined}
                   placeholder={bioPlaceholder}
                 />
                 <p className={css.extraInfo}>

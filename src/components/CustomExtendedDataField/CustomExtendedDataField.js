@@ -21,7 +21,43 @@ import { FieldCheckboxGroup, FieldSelect, FieldTextInput, FieldBoolean } from '.
 // Import modules from this directory
 import css from './CustomExtendedDataField.module.css';
 
-const createFilterOptions = options => options.map(o => ({ key: `${o.option}`, label: o.label }));
+const LABEL_TRANSLATION_MAP = {
+  'Social network': 'ProfileSettingsForm.socialNetwork',
+  Instagram: 'ProfileSettingsForm.socialInstagram',
+  'Instagram link': 'ProfileSettingsForm.socialInstagram',
+  Website: 'ProfileSettingsForm.socialWebsite',
+  Site: 'ProfileSettingsForm.socialWebsite',
+  'Website link': 'ProfileSettingsForm.socialWebsite',
+};
+
+const translateMaybe = (value, intl) => {
+  if (!value || typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmed = value.trim();
+
+  if (trimmed.length === 0) {
+    return trimmed;
+  }
+
+  if (trimmed.includes('.')) {
+    return intl.formatMessage({ id: trimmed, defaultMessage: trimmed });
+  }
+
+  const translationKey = LABEL_TRANSLATION_MAP[trimmed];
+  if (translationKey) {
+    return intl.formatMessage({ id: translationKey, defaultMessage: trimmed });
+  }
+
+  return value;
+};
+
+const createFilterOptions = (options, intl) =>
+  options.map(o => ({
+    key: `${o.option}`,
+    label: translateMaybe(o.label, intl),
+  }));
 
 const getLabel = fieldConfig => fieldConfig?.saveConfig?.label || fieldConfig?.label;
 
@@ -40,28 +76,19 @@ const CustomFieldEnum = props => {
     : {};
     
   // Переводим placeholder если это translation key
-  const translatedPlaceholder = placeholderMessage && placeholderMessage.includes('.')
-    ? intl.formatMessage({ id: placeholderMessage, defaultMessage: placeholderMessage })
-    : placeholderMessage;
+  const translatedPlaceholder = translateMaybe(placeholderMessage, intl);
     
   const placeholder =
     translatedPlaceholder ||
     intl.formatMessage({ id: 'CustomExtendedDataField.placeholderSingleSelect' });
     
   // Переводим labels в options если они translation keys
-  const filterOptions = createFilterOptions(enumOptions)?.map(opt => ({
-    ...opt,
-    label: opt.label && typeof opt.label === 'string' && opt.label.includes('.') 
-      ? intl.formatMessage({ id: opt.label, defaultMessage: opt.label })
-      : opt.label,
-  }));
+  const filterOptions = createFilterOptions(enumOptions, intl);
 
   const label = getLabel(fieldConfig);
   
   // Переводим label если это translation key
-  const translatedLabel = label && label.includes('.') 
-    ? intl.formatMessage({ id: label, defaultMessage: label })
-    : label;
+  const translatedLabel = translateMaybe(label, intl);
 
   return filterOptions ? (
     <FieldSelect
@@ -102,17 +129,10 @@ const CustomFieldMultiEnum = props => {
     : {};
 
   // Переводим label если это translation key
-  const translatedLabel = label && label.includes('.') 
-    ? intl.formatMessage({ id: label, defaultMessage: label })
-    : label;
+  const translatedLabel = translateMaybe(label, intl);
   
   // Переводим labels в options если они translation keys
-  const translatedOptions = createFilterOptions(enumOptions)?.map(opt => ({
-    ...opt,
-    label: opt.label && opt.label.includes && opt.label.includes('.') 
-      ? intl.formatMessage({ id: opt.label, defaultMessage: opt.label })
-      : opt.label,
-  }));
+  const translatedOptions = createFilterOptions(enumOptions, intl);
 
   return enumOptions ? (
     <FieldCheckboxGroup
@@ -129,12 +149,16 @@ const CustomFieldMultiEnum = props => {
 const CustomFieldText = props => {
   const { name, fieldConfig, defaultRequiredMessage, formId, intl } = props;
   const { placeholderMessage, isRequired, requiredMessage } = fieldConfig?.saveConfig || {};
-  const label = getLabel(fieldConfig);
+  const label = translateMaybe(getLabel(fieldConfig), intl);
   const validateMaybe = isRequired
     ? { validate: required(requiredMessage || defaultRequiredMessage) }
     : {};
+  const translatedPlaceholder = translateMaybe(
+    placeholderMessage,
+    intl
+  );
   const placeholder =
-    placeholderMessage || intl.formatMessage({ id: 'CustomExtendedDataField.placeholderText' });
+    translatedPlaceholder || intl.formatMessage({ id: 'CustomExtendedDataField.placeholderText' });
 
   return (
     <FieldTextInput
@@ -206,19 +230,24 @@ const CustomFieldLong = props => {
 const CustomFieldBoolean = props => {
   const { name, fieldConfig, defaultRequiredMessage, formId, intl } = props;
   const { placeholderMessage, isRequired, requiredMessage } = fieldConfig?.saveConfig || {};
-  const label = getLabel(fieldConfig);
+  const translatedLabel = translateMaybe(getLabel(fieldConfig), intl);
   const validateMaybe = isRequired
     ? { validate: required(requiredMessage || defaultRequiredMessage) }
     : {};
+  const translatedPlaceholder = translateMaybe(
+    placeholderMessage,
+    intl
+  );
   const placeholder =
-    placeholderMessage || intl.formatMessage({ id: 'CustomExtendedDataField.placeholderBoolean' });
+    translatedPlaceholder ||
+    intl.formatMessage({ id: 'CustomExtendedDataField.placeholderBoolean' });
 
   return (
     <FieldBoolean
       className={css.customField}
       id={formId ? `${formId}.${name}` : name}
       name={name}
-      label={label}
+      label={translatedLabel}
       placeholder={placeholder}
       {...validateMaybe}
     />
@@ -228,9 +257,13 @@ const CustomFieldBoolean = props => {
 const CustomFieldYoutube = props => {
   const { name, fieldConfig, defaultRequiredMessage, formId, intl } = props;
   const { placeholderMessage, isRequired, requiredMessage } = fieldConfig?.saveConfig || {};
-  const label = getLabel(fieldConfig);
+  const translatedLabel = translateMaybe(getLabel(fieldConfig), intl);
+  const translatedPlaceholder = translateMaybe(
+    placeholderMessage,
+    intl
+  );
   const placeholder =
-    placeholderMessage ||
+    translatedPlaceholder ||
     intl.formatMessage({ id: 'CustomExtendedDataField.placeholderYoutubeVideoURL' });
 
   const notValidUrlMessage = intl.formatMessage({
@@ -250,7 +283,7 @@ const CustomFieldYoutube = props => {
       id={formId ? `${formId}.${name}` : name}
       name={name}
       type="text"
-      label={label}
+      label={translatedLabel}
       placeholder={placeholder}
       validate={value => validate(value)}
     />
