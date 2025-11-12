@@ -10,7 +10,8 @@ import { camelize } from '../../util/string';
 import { propTypes } from '../../util/types';
 
 import { H1 } from '../PageBuilder/Primitives/Heading';
-import FallbackPage, { fallbackSections } from './FallbackPage';
+import { useIntl } from '../../util/reactIntl';
+import FallbackPage, { getFallbackSections } from './FallbackPage';
 import { ASSET_NAME } from './PrivacyPolicyPage.duck';
 
 const PageBuilder = loadable(() =>
@@ -26,6 +27,7 @@ const SectionBuilder = loadable(
 // This "content-only" component can be used in modals etc.
 const PrivacyPolicyContent = props => {
   const { inProgress, error, data } = props;
+  const intl = useIntl();
 
   // We don't want to add h1 heading twice to the HTML (SEO issue).
   // Modal's header is mapped as h2
@@ -41,10 +43,12 @@ const PrivacyPolicyContent = props => {
   const CustomHeading1 = props => <H1 as="h2" {...props} />;
 
   const hasData = error === null && data;
+  const fallbackSections = getFallbackSections(intl.locale);
   const sectionsData = hasData ? data : fallbackSections;
 
   return (
     <SectionBuilder
+      key={`privacy-content-${intl.locale || 'en'}`}
       {...sectionsData}
       options={{
         fieldComponents: {

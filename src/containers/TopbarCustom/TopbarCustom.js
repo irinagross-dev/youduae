@@ -156,7 +156,7 @@ const TopbarCustom = props => {
         </NamedLink>
       </li>
       <li>
-        <NamedLink name="SearchPage" className={css.burgerLink} onClick={closeBurger}>
+        <NamedLink name="CooperationPage" className={css.burgerLink} onClick={closeBurger}>
           <FormattedMessage id="TopbarDesktop.forSpecialists" />
         </NamedLink>
       </li>
@@ -167,7 +167,7 @@ const TopbarCustom = props => {
         </NamedLink>
       </li>
       <li>
-        <NamedLink name="PrivacyPolicyPage" className={css.burgerSubLink} onClick={closeBurger}>
+        <NamedLink name="AboutPage" className={css.burgerSubLink} onClick={closeBurger}>
           <FormattedMessage id="TopbarCustom.aboutCompany" />
         </NamedLink>
       </li>
@@ -343,7 +343,7 @@ const TopbarCustom = props => {
           </nav>
         ) : (
           <nav className={`${css.nav} ${css.hideOnMobile}`} aria-label="Главная навигация">
-            <NamedLink name="SearchPage" className={css.navLink}>
+          <NamedLink name="CooperationPage" className={css.navLink}>
               <FormattedMessage id="TopbarDesktop.forSpecialists" />
             </NamedLink>
             <div className={css.rightButtons}>
