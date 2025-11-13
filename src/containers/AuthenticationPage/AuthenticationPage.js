@@ -670,8 +670,11 @@ export const AuthenticationPageComponent = props => {
   const shouldRedirectToFrom = isAuthenticated && from;
   // PRIORITY: Guest listing creation has priority over email verification
   const shouldRedirectToCreateListing = isAuthenticated && currentUserLoaded && hasCreateListingIntent;
+  // Redirect to welcome page after successful signup (when email is not yet verified by Sharetribe)
+  const shouldRedirectToWelcome =
+    isAuthenticated && currentUserLoaded && !user.attributes.emailVerified && !hasCreateListingIntent && !from;
   const shouldRedirectToLandingPage =
-    isAuthenticated && currentUserLoaded && !showEmailVerification && !hasCreateListingIntent;
+    isAuthenticated && currentUserLoaded && !showEmailVerification && !hasCreateListingIntent && !shouldRedirectToWelcome;
   
   if (!mounted && (shouldRedirectToLandingPage || shouldRedirectToCreateListing)) {
     // Show a blank page for already authenticated users,
@@ -690,6 +693,10 @@ export const AuthenticationPageComponent = props => {
     // Redirect to create listing page with intent parameter
     console.log('✅ User authenticated with createListing intent - redirecting to /l/new');
     return <Redirect to="/l/new?intent=createListing" />;
+  } else if (shouldRedirectToWelcome) {
+    // Redirect to welcome page after successful signup
+    console.log('✅ User just signed up - redirecting to welcome page');
+    return <NamedRedirect name="WelcomePage" />;
   } else if (shouldRedirectToFrom) {
     // Check if user is executor trying to access /listings
     const userTypeFromProfile = currentUser?.attributes?.profile?.publicData?.userType;

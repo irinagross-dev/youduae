@@ -1,0 +1,180 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 24px;
+
+  @media (--viewportMedium) {
+    padding: 48px 24px;
+  }
+}
+
+.content {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.successIcon {
+  width: 100px;
+  height: 100px;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 16px 0;
+  color: var(--colorBlack);
+
+  @media (--viewportMedium) {
+    font-size: 42px;
+  }
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0 0 48px 0;
+  color: var(--colorGrey700);
+
+  @media (--viewportMedium) {
+    font-size: 20px;
+  }
+}
+
+.guidanceSection {
+  margin-bottom: 48px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 32px 0;
+  color: var(--colorBlack);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+  text-align: left;
+
+  @media (--viewportMedium) {
+    gap: 32px;
+  }
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background-color: var(--colorGrey50);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  @media (--viewportMedium) {
+    padding: 24px;
+    gap: 20px;
+  }
+}
+
+.step:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--marketplaceColor);
+  color: white;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--colorBlack);
+}
+
+.stepDescription {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--colorGrey700);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+
+  @media (--viewportMedium) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+.primaryAction,
+.secondaryAction {
+  min-width: 200px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--colorGrey100);
+}
+
+.skipLink {
+  color: var(--colorGrey700);
+  font-size: 15px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.skipLink:hover {
+  color: var(--marketplaceColor);
+  text-decoration: underline;
+}
+

@@ -45,6 +45,7 @@ const CooperationPage = loadable(() => import(/* webpackChunkName: "CooperationP
 const VerificationPage = loadable(() => import(/* webpackChunkName: "VerificationPage" */ '../containers/VerificationPage/VerificationPage'));
 const NoAccessPage = loadable(() => import(/* webpackChunkName: "NoAccessPage" */ '../containers/NoAccessPage/NoAccessPage'));
 const CategoryExecutorsPage = loadable(() => import(/* webpackChunkName: "CategoryExecutorsPage" */ '../containers/CategoryExecutorsPage/CategoryExecutorsPage'));
+const WelcomePage = loadable(() => import(/* webpackChunkName: "WelcomePage" */ '../containers/WelcomePage/WelcomePage'));
 
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ '../containers/StyleguidePage/StyleguidePage'));
@@ -380,6 +381,12 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       path: '/cooperation',
       name: 'CooperationPage',
       component: CooperationPage,
+    },
+    {
+      path: '/welcome',
+      name: 'WelcomePage',
+      auth: true,
+      component: WelcomePage,
     },
     {
       path: '/privacy-policy',
