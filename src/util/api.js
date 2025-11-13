@@ -99,15 +99,24 @@ const request = (path, options = {}) => {
   const url = `${apiBaseUrl()}${path}`;
   const { credentials, headers, body, ...rest } = options;
 
-  // If headers are not set, we assume that the body should be serialized as transit format.
-  const shouldSerializeBody =
-    (!headers || headers['Content-Type'] === 'application/transit+json') && body;
-  const bodyMaybe = shouldSerializeBody ? { body: serialize(body) } : {};
+  // Determine body serialization based on Content-Type
+  const contentType = headers?.['Content-Type'] || 'application/transit+json';
+  const isTransit = contentType === 'application/transit+json';
+  const isJson = contentType === 'application/json';
+
+  let bodyMaybe = {};
+  if (body) {
+    if (isTransit) {
+      bodyMaybe = { body: serialize(body) };
+    } else if (isJson) {
+      bodyMaybe = { body: JSON.stringify(body) };
+    } else {
+      bodyMaybe = { body };
+    }
+  }
 
   const fetchOptions = {
     credentials: credentials || 'include',
-    // Since server/api mostly talks to Marketplace API using SDK,
-    // we default to 'application/transit+json' as content type (as SDK uses transit).
     headers: headers || { 'Content-Type': 'application/transit+json' },
     ...bodyMaybe,
     ...rest,
