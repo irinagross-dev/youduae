@@ -162,7 +162,10 @@ const sendEmailOtp = async (req, res) => {
 
     const { email, locale } = req.body || {};
 
+    console.log('📧 OTP send request:', { email, locale, bodyType: typeof req.body, body: req.body });
+
     if (!email || typeof email !== 'string' || !emailRegex.test(email)) {
+      console.error('❌ Invalid email:', { email, type: typeof email, regex: emailRegex.test(email || '') });
       res.status(400).json({ error: 'invalidEmail' });
       return;
     }
