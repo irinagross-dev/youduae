@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classNames from 'classnames';
@@ -189,21 +189,20 @@ const SignupFormFields = props => {
     }
   };
 
-  const handleEmailChange = () => {
+  // Watch email changes and reset OTP state if email changes after verification
+  useEffect(() => {
     if (otpState.sent || otpState.verified) {
-      setOtpState({
+      setOtpState(prev => ({
+        ...prev,
         sent: false,
         verified: false,
-        sending: false,
-        verifying: false,
         challengeToken: null,
         verifiedToken: null,
         error: null,
         info: null,
-        lastSentAt: null,
-      });
+      }));
     }
-  };
+  }, [email]);
 
   return (
     <Form className={classes} onSubmit={handleSubmit}>
@@ -226,7 +225,6 @@ const SignupFormFields = props => {
             label={intl.formatMessage({ id: 'SignupForm.emailLabel' })}
             placeholder={intl.formatMessage({ id: 'SignupForm.emailPlaceholder' })}
             validate={validators.composeValidators(emailRequired, emailValid)}
-            onChange={handleEmailChange}
           />
 
           <div className={css.emailOtpContainer}>
