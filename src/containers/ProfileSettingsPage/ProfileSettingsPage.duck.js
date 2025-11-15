@@ -194,7 +194,9 @@ export const uploadPortfolio = ({ files, title, description, category, transacti
         const state = getState();
         const currentUser = state.user.currentUser;
         const publicData = currentUser?.attributes?.profile?.publicData || {};
-        const portfolioItems = publicData.portfolioItems || {};
+        const portfolioItems = Array.isArray(publicData.portfolioItems) 
+          ? publicData.portfolioItems 
+          : [];
 
         // Create new portfolio item
         const newItem = {
