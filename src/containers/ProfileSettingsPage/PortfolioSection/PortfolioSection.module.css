@@ -239,17 +239,20 @@
 }
 
 .input,
-.textarea {
+.textarea,
+.select {
   padding: 12px 16px;
   border: 1px solid var(--colorGrey300);
   border-radius: 6px;
   font-size: 15px;
   font-family: inherit;
   transition: border-color 0.2s ease;
+  width: 100%;
 }
 
 .input:focus,
-.textarea:focus {
+.textarea:focus,
+.select:focus {
   outline: none;
   border-color: var(--marketplaceColor);
 }
@@ -257,6 +260,23 @@
 .textarea {
   resize: vertical;
   min-height: 80px;
+}
+
+.select {
+  background-color: var(--colorWhite);
+  cursor: pointer;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--colorGrey500);
+}
+
+.fieldHint {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: var(--colorGrey500);
+  line-height: 1.4;
 }
 
 .error {
@@ -268,3 +288,29 @@
   font-size: 14px;
 }
 
+
+.noCompletedWorks {
+  padding: 40px 24px;
+  text-align: center;
+  background-color: var(--colorGrey50);
+  border-radius: 8px;
+}
+
+.noWorksText {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--colorGrey700);
+}
+
+.noWorksHint {
+  margin: 0;
+  font-size: 14px;
+  color: var(--colorGrey500);
+  line-height: 1.5;
+}
+
+.required {
+  color: var(--colorFail);
+  margin-left: 2px;
+}

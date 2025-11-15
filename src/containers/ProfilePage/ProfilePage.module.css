@@ -465,3 +465,68 @@
     font-size: 18px;
   }
 }
+
+.completedTasksList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.completedTaskItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: #f9fafb;
+  border-radius: 6px;
+  border-left: 3px solid #4CAF50;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.completedTaskItem:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.taskIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.taskInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.taskTitle {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--colorBlack);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.taskDate {
+  margin: 0;
+  font-size: 13px;
+  color: var(--colorGrey500);
+}

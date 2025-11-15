@@ -433,6 +433,9 @@ export const CustomUserFields = props => {
 
 export const MainContent = props => {
   const [mounted, setMounted] = useState(false);
+  const [completedTransactions, setCompletedTransactions] = useState([]);
+  const [loadingTransactions, setLoadingTransactions] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -453,6 +456,26 @@ export const MainContent = props => {
     hideReviews,
     userTypeRoles,
   } = props;
+
+  // Load completed transactions for Customer (specialists)
+  useEffect(() => {
+    if (user?.id?.uuid && userTypeRoles.provider) {
+      // This is a Customer (specialist) - load their completed transactions
+      setLoadingTransactions(true);
+      console.log('🔍 Loading completed transactions for Customer:', user.id.uuid);
+      import('../../util/api')
+        .then(module => module.getUserCompletedTransactions(user.id.uuid))
+        .then(response => {
+          console.log('✅ Loaded completed transactions:', response);
+          setCompletedTransactions(response.completedWorks || []);
+          setLoadingTransactions(false);
+        })
+        .catch(error => {
+          console.error('❌ Failed to load completed transactions:', error);
+          setLoadingTransactions(false);
+        });
+    }
+  }, [user?.id?.uuid, userTypeRoles.provider]);
 
   const openListings = listings.filter(l => l?.attributes?.state === 'published');
   const closedListings = listings.filter(l => l?.attributes?.state === 'closed');
@@ -497,7 +520,7 @@ export const MainContent = props => {
         reviews={reviews}
         user={user}
         userTypeRoles={userTypeRoles}
-        completedTaskCount={closedListings.length}
+        completedTaskCount={userTypeRoles.customer ? closedListings.length : completedTransactions.length}
       />
 
       {displayName ? (
@@ -518,58 +541,97 @@ export const MainContent = props => {
         />
       ) : null}
 
-      {hasOpenListings ? (
-        <div className={listingsContainerClasses}>
-          <H4 as="h2" className={css.listingsTitle}>
-            <FormattedMessage
-              id="ProfilePage.openListingsTitle"
-              values={{ count: openListings.length }}
-            />
-          </H4>
-          <ul className={css.listings}>
-            {openListings.map(l => (
-              <li className={css.listing} key={l.id.uuid}>
-                <ListingCard listing={l} showAuthorInfo={false} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <div className={listingsContainerClasses}>
-          <H4 as="h2" className={css.listingsTitle}>
-            <FormattedMessage id="ProfilePage.openListingsTitle" values={{ count: 0 }} />
-          </H4>
-          <p className={css.emptyState}>
-            <FormattedMessage id="ProfilePage.emptyOpenListings" />
-          </p>
-        </div>
-      )}
-      {hasClosedListings ? (
+      {/* Open listings section - only for Provider (can create listings) */}
+      {userTypeRoles.customer ? (
+        hasOpenListings ? (
+          <div className={listingsContainerClasses}>
+            <H4 as="h2" className={css.listingsTitle}>
+              <FormattedMessage
+                id="ProfilePage.openListingsTitle"
+                values={{ count: openListings.length }}
+              />
+            </H4>
+            <ul className={css.listings}>
+              {openListings.map(l => (
+                <li className={css.listing} key={l.id.uuid}>
+                  <ListingCard listing={l} showAuthorInfo={false} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className={listingsContainerClasses}>
+            <H4 as="h2" className={css.listingsTitle}>
+              <FormattedMessage id="ProfilePage.openListingsTitle" values={{ count: 0 }} />
+            </H4>
+            <p className={css.emptyState}>
+              <FormattedMessage id="ProfilePage.emptyOpenListings" />
+            </p>
+          </div>
+        )
+      ) : null}
+      {/* Completed tasks section */}
+      {userTypeRoles.customer ? (
+        // For Provider (creates listings) - show closed listings
+        hasClosedListings ? (
+          <div className={classNames(css.listingsContainer, css.completedListings)}>
+            <H4 as="h2" className={css.listingsTitle}>
+              <FormattedMessage
+                id="ProfilePage.completedListingsTitle"
+                values={{ count: closedListings.length }}
+              />
+            </H4>
+            <ul className={css.listings}>
+              {closedListings.map(l => (
+                <li className={css.listing} key={l.id.uuid}>
+                  <ListingCard listing={l} showAuthorInfo={false} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className={classNames(css.listingsContainer, css.completedListings)}>
+            <H4 as="h2" className={css.listingsTitle}>
+              <FormattedMessage id="ProfilePage.completedListingsTitle" values={{ count: 0 }} />
+            </H4>
+            <p className={css.emptyState}>
+              <FormattedMessage id="ProfilePage.emptyCompletedListings" />
+            </p>
+          </div>
+        )
+      ) : completedTransactions.length > 0 ? (
+        // For Customer (specialist) - show completed transactions
         <div className={classNames(css.listingsContainer, css.completedListings)}>
           <H4 as="h2" className={css.listingsTitle}>
             <FormattedMessage
-              id="ProfilePage.completedListingsTitle"
-              values={{ count: closedListings.length }}
+              id="ProfilePage.completedTasksTitle"
+              values={{ count: completedTransactions.length }}
             />
           </H4>
-          <ul className={css.listings}>
-            {closedListings.map(l => (
-              <li className={css.listing} key={l.id.uuid}>
-                <ListingCard listing={l} showAuthorInfo={false} />
-              </li>
+          <div className={css.completedTasksList}>
+            {completedTransactions.map(work => (
+              <div key={work.transactionId} className={css.completedTaskItem}>
+                <div className={css.taskIcon}>✓</div>
+                <div className={css.taskInfo}>
+                  <h4 className={css.taskTitle}>{work.listingTitle}</h4>
+                  <p className={css.taskDate}>
+                    {new Date(work.completedAt).toLocaleDateString(intl.locale)}
+                  </p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
-      ) : (
+      ) : !loadingTransactions && userTypeRoles.provider ? (
         <div className={classNames(css.listingsContainer, css.completedListings)}>
           <H4 as="h2" className={css.listingsTitle}>
-            <FormattedMessage id="ProfilePage.completedListingsTitle" values={{ count: 0 }} />
+            <FormattedMessage id="ProfilePage.completedTasksTitle" values={{ count: 0 }} />
           </H4>
           <p className={css.emptyState}>
-            <FormattedMessage id="ProfilePage.emptyCompletedListings" />
+            <FormattedMessage id="ProfilePage.emptyCompletedTasks" />
           </p>
         </div>
-      )}
+      ) : null}
       {hideReviews ? null : isMobileLayout ? (
         <MobileReviews
           reviews={reviews}

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { H4, SecondaryButton, ResponsiveImage, IconClose } from '../../../components';
+import { getUserCompletedTransactions } from '../../../util/api';
 
 import css from './PortfolioSection.module.css';
 
@@ -11,6 +12,27 @@ const PortfolioSection = props => {
   const [uploadError, setUploadError] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedTransactionId, setSelectedTransactionId] = useState('');
+  const [completedWorks, setCompletedWorks] = useState([]);
+  const [loadingWorks, setLoadingWorks] = useState(false);
+
+  // Load completed transactions on mount
+  useEffect(() => {
+    if (currentUser?.id?.uuid) {
+      setLoadingWorks(true);
+      console.log('🔍 PortfolioSection: Loading completed works for:', currentUser.id.uuid);
+      getUserCompletedTransactions(currentUser.id.uuid)
+        .then(response => {
+          console.log('✅ PortfolioSection: Loaded completed works:', response);
+          setCompletedWorks(response.completedWorks || []);
+          setLoadingWorks(false);
+        })
+        .catch(error => {
+          console.error('❌ PortfolioSection: Failed to load completed transactions:', error);
+          setLoadingWorks(false);
+        });
+    }
+  }, [currentUser?.id?.uuid]);
 
   const publicData = currentUser?.attributes?.profile?.publicData || {};
   const portfolioItems = publicData.portfolioItems || [];
@@ -79,13 +101,36 @@ const PortfolioSection = props => {
     });
   };
 
+  const handleTransactionSelect = e => {
+    const txId = e.target.value;
+    setSelectedTransactionId(txId);
+    
+    // Auto-fill title from selected transaction
+    if (txId) {
+      const selectedWork = completedWorks.find(w => w.transactionId === txId);
+      if (selectedWork) {
+        setTitle(selectedWork.listingTitle);
+      }
+    } else {
+      setTitle('');
+    }
+  };
+
   const handleSubmit = async () => {
     if (selectedFiles.length === 0) {
       setUploadError(intl.formatMessage({ id: 'PortfolioSection.noImages' }));
       return;
     }
 
+    if (!selectedTransactionId) {
+      setUploadError(intl.formatMessage({ id: 'PortfolioSection.transactionRequired' }));
+      return;
+    }
+
     try {
+      // Find category from selected transaction
+      const selectedWork = completedWorks.find(w => w.transactionId === selectedTransactionId);
+
       // Call the parent's upload handler which will:
       // 1. Upload images to Sharetribe via SDK
       // 2. Get image UUIDs
@@ -94,12 +139,15 @@ const PortfolioSection = props => {
         files: selectedFiles,
         title: title || intl.formatMessage({ id: 'PortfolioSection.untitledWork' }),
         description: description || '',
+        category: selectedWork?.category || null,
+        transactionId: selectedTransactionId || null,
       });
 
       // Reset form on success
       setSelectedFiles([]);
       setTitle('');
       setDescription('');
+      setSelectedTransactionId('');
       setUploadError(null);
     } catch (error) {
       console.error('Failed to add portfolio item:', error);
@@ -164,13 +212,14 @@ const PortfolioSection = props => {
         </div>
       )}
 
-      {/* Add new work form */}
-      <div className={css.addNewSection}>
-        <h3 className={css.subsectionTitle}>
-          <FormattedMessage id="PortfolioSection.addNew" />
-        </h3>
+      {/* Add new work form - only if has completed transactions */}
+      {completedWorks.length > 0 ? (
+        <div className={css.addNewSection}>
+          <h3 className={css.subsectionTitle}>
+            <FormattedMessage id="PortfolioSection.addNew" />
+          </h3>
 
-        <div className={css.uploadArea}>
+          <div className={css.uploadArea}>
           <input
             type="file"
             id="portfolio-upload"
@@ -215,6 +264,32 @@ const PortfolioSection = props => {
 
         {selectedFiles.length > 0 && (
           <div className={css.formFields}>
+            {/* Dropdown to select completed work - REQUIRED */}
+            <div className={css.formField}>
+              <label className={css.label}>
+                <FormattedMessage id="PortfolioSection.selectCompletedWork" />
+                <span className={css.required}> *</span>
+              </label>
+              <select
+                value={selectedTransactionId}
+                onChange={handleTransactionSelect}
+                className={css.select}
+                required
+              >
+                <option value="">
+                  {intl.formatMessage({ id: 'PortfolioSection.selectWorkPlaceholder' })}
+                </option>
+                {completedWorks.map(work => (
+                  <option key={work.transactionId} value={work.transactionId}>
+                    {work.listingTitle} ({new Date(work.completedAt).toLocaleDateString(intl.locale)})
+                  </option>
+                ))}
+              </select>
+              <p className={css.fieldHint}>
+                <FormattedMessage id="PortfolioSection.selectWorkHint" />
+              </p>
+            </div>
+
             <div className={css.formField}>
               <label className={css.label}>
                 <FormattedMessage id="PortfolioSection.titleLabel" />
@@ -255,7 +330,17 @@ const PortfolioSection = props => {
         )}
 
         {uploadError && <div className={css.error}>{uploadError}</div>}
-      </div>
+        </div>
+      ) : (
+        <div className={css.noCompletedWorks}>
+          <p className={css.noWorksText}>
+            <FormattedMessage id="PortfolioSection.noCompletedWorks" />
+          </p>
+          <p className={css.noWorksHint}>
+            <FormattedMessage id="PortfolioSection.noCompletedWorksHint" />
+          </p>
+        </div>
+      )}
     </div>
   );
 };

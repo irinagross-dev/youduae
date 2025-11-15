@@ -171,6 +171,8 @@ export const TransactionPageComponent = props => {
     nextTransitions,
     callSetInitialValues,
     onInitializeCardPaymentData,
+    updateInProgress,
+    onAddPortfolio,
     ...restOfProps
   } = props;
 

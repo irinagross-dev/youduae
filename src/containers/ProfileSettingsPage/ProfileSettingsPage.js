@@ -78,6 +78,7 @@ export const ProfileSettingsPageComponent = props => {
     image,
     onImageUpload,
     onUpdateProfile,
+    onUploadPortfolio,
     scrollingDisabled,
     updateInProgress,
     updateProfileError,

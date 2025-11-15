@@ -274,3 +274,10 @@ export const assertEmailVerified = ({ verifiedToken }) => {
     headers: { 'Content-Type': 'application/json' },
   });
 };
+
+// Get completed transactions for a Customer user
+export const getUserCompletedTransactions = userId => {
+  return get(`/api/user-completed-transactions?userId=${userId}`, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
