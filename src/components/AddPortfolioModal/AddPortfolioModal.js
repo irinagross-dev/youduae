@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form as FinalForm } from 'react-final-form';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import * as validators from '../../util/validators';
@@ -227,11 +228,11 @@ AddPortfolioModal.defaultProps = {
 };
 
 AddPortfolioModal.propTypes = {
-  id: propTypes.string.isRequired,
-  isOpen: propTypes.bool.isRequired,
-  onClose: propTypes.func.isRequired,
-  onSubmit: propTypes.func.isRequired,
-  inProgress: propTypes.bool,
+  id: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  inProgress: PropTypes.bool,
   currentUser: propTypes.currentUser,
   transactionId: propTypes.uuid,
 };
