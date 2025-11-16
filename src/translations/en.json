@@ -819,6 +819,7 @@
   "ProfilePage.mobileHeading": "{name}",
   "ProfilePage.reviewsAsACustomerTitle": "Reviews as a customer ({count})",
   "ProfilePage.reviewsFromMyCustomersTitle": "Reviews from customers ({count})",
+  "ProfilePage.serviceCategoriesTitle": "Service Categories",
   "ProfilePage.schemaTitle": "{name} | {marketplaceName}",
   "ProfileSettingsForm.addYourProfilePicture": "+ Add your profile picture…",
   "ProfileSettingsForm.addYourProfilePictureMobile": "+ Add",

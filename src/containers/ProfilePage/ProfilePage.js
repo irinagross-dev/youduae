@@ -58,6 +58,7 @@ import SectionDetailsMaybe from './SectionDetailsMaybe';
 import SectionTextMaybe from './SectionTextMaybe';
 import SectionMultiEnumMaybe from './SectionMultiEnumMaybe';
 import SectionYoutubeVideoMaybe from './SectionYoutubeVideoMaybe';
+import SectionServiceCategories from './SectionServiceCategories';
 
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 const MIN_LENGTH_FOR_LONG_WORDS = 20;
@@ -425,8 +426,16 @@ export const CustomUserFields = props => {
   return (
     <>
       <SectionDetailsMaybe {...props} />
+      {/* Кастомное отображение категорий с подкатегориями для Customer */}
+      {publicData?.userType === 'customer' && publicData?.serviceCategories?.length > 0 && (
+        <SectionServiceCategories publicData={publicData} />
+      )}
       {propsForCustomFields.map(customFieldProps => {
         const { schemaType, key, ...fieldProps } = customFieldProps;
+        // Пропускаем serviceCategories - показываем через SectionServiceCategories
+        if (key === 'serviceCategories') {
+          return null;
+        }
         return schemaType === SCHEMA_TYPE_MULTI_ENUM ? (
           <SectionMultiEnumMaybe key={key} {...fieldProps} />
         ) : schemaType === SCHEMA_TYPE_TEXT ? (

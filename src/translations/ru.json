@@ -818,6 +818,7 @@
   "ProfilePage.emptyOpenListings": "Здесь будут отображаться активные задания. Создайте новое задание, чтобы найти исполнителя.",
   "ProfilePage.emptyCompletedListings": "Завершённые задания появятся здесь после закрытия первых работ.",
   "ProfilePage.memberSince": "Дата регистрации",
+  "ProfilePage.serviceCategoriesTitle": "Категории услуг",
   "ProfilePage.reviewsAsACustomerTitle": "Отзывы ({count})",
   "ProfilePage.reviewsFromMyCustomersTitle": "Reviews from customers ({count})",
   "ProfilePage.schemaTitle": "{name} | {marketplaceName}",

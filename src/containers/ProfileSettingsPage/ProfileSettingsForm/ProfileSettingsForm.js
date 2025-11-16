@@ -21,6 +21,7 @@ import {
   FieldTextInput,
   H4,
   CustomExtendedDataField,
+  ServiceCategorySelector,
 } from '../../../components';
 
 import css from './ProfileSettingsForm.module.css';
@@ -409,9 +410,24 @@ class ProfileSettingsFormComponent extends Component {
                 </p>
               </div>
               <div className={classNames(css.sectionContainer, css.lastSection)}>
-                {userFieldProps.map(({ key, ...fieldProps }) => (
-                  <CustomExtendedDataField key={key} {...fieldProps} formId={formId} />
-                ))}
+                {/* Кастомный селектор для Customer */}
+                {userTypeConfig?.userType === 'customer' && (
+                  <ServiceCategorySelector
+                    key="serviceCategories"
+                    name="serviceCategories"
+                    formId={formId}
+                    values={values}
+                  />
+                )}
+                
+                {/* Остальные кастомные поля */}
+                {userFieldProps.map(({ key, ...fieldProps }) => {
+                  // Пропускаем serviceCategories для Customer - показываем через ServiceCategorySelector
+                  if (key === 'serviceCategories' && userTypeConfig?.userType === 'customer') {
+                    return null;
+                  }
+                  return <CustomExtendedDataField key={key} {...fieldProps} formId={formId} />;
+                })}
               </div>
               {submitError}
               <Button

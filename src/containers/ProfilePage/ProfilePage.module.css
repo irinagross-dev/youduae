@@ -615,3 +615,62 @@
   font-size: 13px;
   color: var(--colorGrey500);
 }
+
+/* ================================================
+   Service Categories Section (with subcategories)
+   ================================================ */
+
+.sectionServiceCategories {
+  margin-bottom: 32px;
+}
+
+.categoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.categoryBlock {
+  padding: 16px 20px;
+  background: #fafafa;
+  border-left: 4px solid #ffc934;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.categoryBlock:hover {
+  background: #f5f5f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.categoryName {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--colorBlack);
+  margin-bottom: 12px;
+}
+
+.subcategoriesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.subcategoryPill {
+  display: inline-block;
+  padding: 6px 14px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.subcategoryPill:hover {
+  border-color: #ffc934;
+  background: #fff8e6;
+  transform: translateY(-1px);
+}
