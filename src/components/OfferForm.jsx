@@ -147,14 +147,22 @@ export default function OfferForm({
     }
   };
 
-  // ✅ БЛОКИРОВКА: Provider не может откликаться
+  // ✅ БЛОКИРОВКА: Неавторизованные или Provider не могут откликаться
   // Только пользователи с ролью Customer (isOnlyCustomer === true) могут откликаться
   if (!isOnlyCustomer) {
+    const isAuthenticated = !!currentUser;
+    
     return (
       <div style={{ padding: 16, backgroundColor: '#FFF3CD', border: '1px solid #FFEAA7', borderRadius: 4 }}>
-        <strong style={{ color: '#856404' }}>Вы не можете откликнуться на это задание</strong>
+        <strong style={{ color: '#856404' }}>
+          {isAuthenticated 
+            ? 'Вы не можете откликнуться на это задание' 
+            : 'Авторизуйтесь для отклика на задание'}
+        </strong>
         <p style={{ marginTop: 8, marginBottom: 0, color: '#856404' }}>
-          Вы являетесь заказчиком (Provider). Только исполнители (Customer) могут откликаться на задания. Вы можете создавать свои задания в разделе "Мои задания".
+          {isAuthenticated 
+            ? 'Вы являетесь заказчиком (Provider). Только исполнители (Customer) могут откликаться на задания. Вы можете создавать свои задания в разделе "Мои задания".'
+            : 'Вы не авторизованы и не можете откликнуться на задание. Только авторизованные пользователи (Специалисты) могут откликаться и предложить свою цену или принять текущую.'}
         </p>
       </div>
     );

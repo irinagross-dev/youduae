@@ -415,7 +415,7 @@ margin-bottom: -5px;
 }
 
 .productOrderPanel {
-  display: none;
+  display: block; /* ✅ Показываем на мобильных для отображения цены */
 
   @media (min-width: 1023px) {
     display: block;
