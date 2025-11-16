@@ -21,9 +21,8 @@ import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import FooterContainer from '../../containers/FooterContainer/FooterContainer';
 
 import ProfileSettingsForm from './ProfileSettingsForm/ProfileSettingsForm';
-import PortfolioSection from './PortfolioSection/PortfolioSection';
 
-import { updateProfile, uploadImage, uploadPortfolio } from './ProfileSettingsPage.duck';
+import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
 import css from './ProfileSettingsPage.module.css';
 
 const onImageUploadHandler = (values, fn) => {
@@ -78,7 +77,6 @@ export const ProfileSettingsPageComponent = props => {
     image,
     onImageUpload,
     onUpdateProfile,
-    onUploadPortfolio,
     scrollingDisabled,
     updateInProgress,
     updateProfileError,
@@ -199,16 +197,6 @@ export const ProfileSettingsPageComponent = props => {
             <ViewProfileLink userUUID={user?.id?.uuid} isUnauthorizedUser={isUnauthorizedUser} />
           </div>
           {profileSettingsForm}
-          
-          {/* Portfolio section - only for Customer (specialists) */}
-          {userType === 'customer' && (
-            <PortfolioSection
-              currentUser={currentUser}
-              onUpdateProfile={onUpdateProfile}
-              onUploadPortfolio={onUploadPortfolio}
-              updateInProgress={updateInProgress}
-            />
-          )}
         </div>
       </LayoutSingleColumn>
     </Page>
@@ -238,7 +226,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onImageUpload: data => dispatch(uploadImage(data)),
   onUpdateProfile: data => dispatch(updateProfile(data)),
-  onUploadPortfolio: data => dispatch(uploadPortfolio(data)),
 });
 
 const ProfileSettingsPage = compose(

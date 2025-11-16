@@ -125,6 +125,26 @@
   font-size: 14px;
 }
 
+.resetFilterButton {
+  display: inline-block;
+  padding: 14px 28px;
+  background: var(--marketplaceColor);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 20px 0;
+}
+
+.resetFilterButton:hover {
+  background: var(--marketplaceColorDark, #5a7a9f);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .backToHomeLink {
   display: inline-block;
   color: #4A90E2;

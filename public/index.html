@@ -72,12 +72,9 @@
     <div id="portal-root"></div>
 
     <!--
-         Stripe script should be on every page, not just the pages that
-         use the API:
-
-         https://stripe.com/docs/stripe.js#including-stripejs
+         Stripe script is now loaded lazily only on pages that need it
+         (CheckoutPage, PaymentMethodsPage, StripePayoutPage)
        -->
-    <script src="https://js.stripe.com/v3/" crossorigin></script>
     <!--!preloadedStateScript-->
 
     <!--!ssrScripts-->

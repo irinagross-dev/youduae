@@ -149,14 +149,20 @@ export const queryUserListings = (userId, config, ownProfileOnly = false) => (
 
   const listingStates = ['published', 'closed'];
 
+  // Add timestamp to prevent SDK caching
+  const cacheBuster = Date.now();
+
   return sdk.listings
     .query({
       author_id: userId,
       states: listingStates,
       ...queryParams,
+      // Force fresh data by adding metadata param
+      meta_cacheBuster: cacheBuster,
     })
     .then(response => {
       const listings = response?.data?.data || [];
+      
       const listingRefs = listings
         .filter(
           l =>

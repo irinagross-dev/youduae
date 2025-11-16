@@ -122,9 +122,10 @@ export { default as UserNav } from './UserNav/UserNav';
 // These components include other components //
 ///////////////////////////////////////////////
 
-export { default as AddPortfolioModal } from './AddPortfolioModal/AddPortfolioModal';
 export { default as Avatar, AvatarSmall, AvatarMedium, AvatarLarge } from './Avatar/Avatar';
 export { default as CustomExtendedDataField } from './CustomExtendedDataField/CustomExtendedDataField';
+export { default as ServiceCategorySelector } from './ServiceCategorySelector/ServiceCategorySelector';
+export { default as SubcategoryFilter } from './SubcategoryFilter/SubcategoryFilter';
 export { default as OrderBreakdown } from './OrderBreakdown/OrderBreakdown';
 export { default as OrderPanel } from './OrderPanel/OrderPanel';
 export { default as ListingCard } from './ListingCard/ListingCard';

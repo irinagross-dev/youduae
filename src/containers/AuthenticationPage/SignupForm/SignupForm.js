@@ -15,6 +15,7 @@ import {
   SecondaryButton,
   FieldTextInput,
   CustomExtendedDataField,
+  ServiceCategorySelector,
 } from '../../../components';
 
 import FieldSelectUserType from '../FieldSelectUserType';
@@ -360,9 +361,25 @@ const SignupFormFields = props => {
 
       {showCustomUserFields ? (
         <div className={css.customFields}>
-          {userFieldProps.map(({ key, ...fieldProps}) => (
-            <CustomExtendedDataField key={key} {...fieldProps} formId={formId} />
-          ))}
+          {/* Всегда показываем ServiceCategorySelector для Customer */}
+          {userType === 'customer' && (
+            <ServiceCategorySelector
+              key="serviceCategories"
+              name="serviceCategories"
+              formId={formId}
+              values={values}
+            />
+          )}
+          
+          {/* Остальные кастомные поля */}
+          {userFieldProps.map(({ key, ...fieldProps}) => {
+            // Пропускаем serviceCategories, так как мы его уже отрендерили выше
+            if (key === 'serviceCategories') {
+              return null;
+            }
+            // Для остальных полей используем стандартный компонент
+            return <CustomExtendedDataField key={key} {...fieldProps} formId={formId} />;
+          })}
         </div>
       ) : null}
 

@@ -127,77 +127,77 @@ const LandingPage = () => {
             </p>
 
             <div className={css.categoriesGrid}>
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'construction' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'repairs_main' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconDrill}></span>
                   <span><FormattedMessage id="LandingPage.category.construction" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'beauty' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Beauty_health' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconScissors}></span>
                   <span><FormattedMessage id="LandingPage.category.beauty" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'tutoring' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'training' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconSchool}></span>
                   <span><FormattedMessage id="LandingPage.category.tutors" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'cleaning' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Help_home' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconHousekeeper}></span>
                   <span><FormattedMessage id="LandingPage.category.cleaning" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'legal' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Legal_assistance' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconWeight}></span>
                   <span><FormattedMessage id="LandingPage.category.legal" values={{ br: <br /> }} /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'appliances' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Installation_mashines' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconKitchen}></span>
                   <span><FormattedMessage id="LandingPage.category.appliances" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'media' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Photo' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconCamera}></span>
                   <span><FormattedMessage id="LandingPage.category.photo" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'courier' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Delivery' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconCourier}></span>
                   <span><FormattedMessage id="LandingPage.category.courier" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'moving' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Cargo_transportation' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconTruck}></span>
                   <span><FormattedMessage id="LandingPage.category.transport" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'tech-repair' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Repair_digital' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconSearch}></span>
                   <span><FormattedMessage id="LandingPage.category.electronics" /></span>
                 </div>
               </NamedLink>
 
-              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'auto' }} className={css.cardBtn}>
+              <NamedLink name="CategoryExecutorsPage" params={{ categoryId: 'Automotive_services' }} className={css.cardBtn}>
                 <div className={css.textIcon}>
                   <span className={css.iconCar}></span>
                   <span><FormattedMessage id="LandingPage.category.auto" /></span>

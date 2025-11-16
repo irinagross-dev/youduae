@@ -16,7 +16,7 @@ import { H3, SavedCardDetails, Page, UserNav, LayoutSideNavigation } from '../..
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import FooterContainer from '../../containers/FooterContainer/FooterContainer';
 
-import PaymentMethodsForm from './PaymentMethodsForm/PaymentMethodsForm';
+import PaymentMethodsForm from './PaymentMethodsForm/PaymentMethodsFormWrapper';
 
 import { createStripeSetupIntent, stripeCustomer } from './PaymentMethodsPage.duck.js';
 

@@ -58,7 +58,6 @@ import SectionDetailsMaybe from './SectionDetailsMaybe';
 import SectionTextMaybe from './SectionTextMaybe';
 import SectionMultiEnumMaybe from './SectionMultiEnumMaybe';
 import SectionYoutubeVideoMaybe from './SectionYoutubeVideoMaybe';
-import SectionPortfolio from './SectionPortfolio';
 
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 const MIN_LENGTH_FOR_LONG_WORDS = 20;
@@ -308,7 +307,9 @@ export const ListingOwnerStats = props => {
   };
 
   const averageRating = calculateAverageRating(reviewsOfListingOwner);
-  const completedTasks = Math.max(completedTaskCount, reviewsOfListingOwner.length);
+  // Для Provider (заказчик): показываем количество закрытых листингов
+  // Для Customer (исполнитель): показываем количество выполненных транзакций
+  const completedTasks = completedTaskCount || 0;
   
   // Дата регистрации
   const createdAt = user?.attributes?.createdAt;
@@ -386,7 +387,14 @@ export const ListingOwnerStats = props => {
             <FormattedMessage id={tasksLabelId} />
           </div>
           <div className={css.statValue}>
-            <span className={css.taskCount}>{completedTasks}</span>
+            <span className={classNames(css.taskCount, {
+              [css.taskCountLarge]: completedTasks >= 100,
+              [css.taskCountMedium]: completedTasks >= 10 && completedTasks < 100,
+            })}>
+              {completedTasks >= 1000 
+                ? `${(completedTasks / 1000).toFixed(1)}k`.replace('.0k', 'k')
+                : completedTasks}
+            </span>
           </div>
         </div>
 
@@ -457,25 +465,23 @@ export const MainContent = props => {
     userTypeRoles,
   } = props;
 
-  // Load completed transactions for Customer (specialists)
+  // Load completed transactions for ALL users (Provider and Customer)
   useEffect(() => {
-    if (user?.id?.uuid && userTypeRoles.provider) {
-      // This is a Customer (specialist) - load their completed transactions
+    if (user?.id?.uuid) {
       setLoadingTransactions(true);
-      console.log('🔍 Loading completed transactions for Customer:', user.id.uuid);
+      
       import('../../util/api')
         .then(module => module.getUserCompletedTransactions(user.id.uuid))
         .then(response => {
-          console.log('✅ Loaded completed transactions:', response);
           setCompletedTransactions(response.completedWorks || []);
           setLoadingTransactions(false);
         })
         .catch(error => {
-          console.error('❌ Failed to load completed transactions:', error);
+          console.error('Failed to load completed transactions:', error);
           setLoadingTransactions(false);
         });
     }
-  }, [user?.id?.uuid, userTypeRoles.provider]);
+  }, [user?.id?.uuid, userTypeRoles.provider, userTypeRoles.customer]);
 
   const openListings = listings.filter(l => l?.attributes?.state === 'published');
   const closedListings = listings.filter(l => l?.attributes?.state === 'closed');
@@ -520,7 +526,7 @@ export const MainContent = props => {
         reviews={reviews}
         user={user}
         userTypeRoles={userTypeRoles}
-        completedTaskCount={userTypeRoles.customer ? closedListings.length : completedTransactions.length}
+        completedTaskCount={completedTransactions.length}
       />
 
       {displayName ? (
@@ -528,15 +534,6 @@ export const MainContent = props => {
           publicData={publicData}
           metadata={metadata}
           userFieldConfig={userFieldConfig}
-          intl={intl}
-        />
-      ) : null}
-
-      {/* Portfolio section for Customer (specialists) only */}
-      {userTypeRoles.provider && publicData.portfolioItems?.length > 0 ? (
-        <SectionPortfolio
-          portfolioItems={publicData.portfolioItems}
-          user={user}
           intl={intl}
         />
       ) : null}
@@ -570,41 +567,13 @@ export const MainContent = props => {
           </div>
         )
       ) : null}
-      {/* Completed tasks section */}
-      {userTypeRoles.customer ? (
-        // For Provider (creates listings) - show closed listings
-        hasClosedListings ? (
-          <div className={classNames(css.listingsContainer, css.completedListings)}>
-            <H4 as="h2" className={css.listingsTitle}>
-              <FormattedMessage
-                id="ProfilePage.completedListingsTitle"
-                values={{ count: closedListings.length }}
-              />
-            </H4>
-            <ul className={css.listings}>
-              {closedListings.map(l => (
-                <li className={css.listing} key={l.id.uuid}>
-                  <ListingCard listing={l} showAuthorInfo={false} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div className={classNames(css.listingsContainer, css.completedListings)}>
-            <H4 as="h2" className={css.listingsTitle}>
-              <FormattedMessage id="ProfilePage.completedListingsTitle" values={{ count: 0 }} />
-            </H4>
-            <p className={css.emptyState}>
-              <FormattedMessage id="ProfilePage.emptyCompletedListings" />
-            </p>
-          </div>
-        )
-      ) : completedTransactions.length > 0 ? (
-        // For Customer (specialist) - show completed transactions
+      {/* Completed tasks section - для ВСЕХ пользователей */}
+      {completedTransactions.length > 0 ? (
+        // Show completed transactions for ALL user types
         <div className={classNames(css.listingsContainer, css.completedListings)}>
           <H4 as="h2" className={css.listingsTitle}>
             <FormattedMessage
-              id="ProfilePage.completedTasksTitle"
+              id={userTypeRoles.customer ? "ProfilePage.completedListingsTitle" : "ProfilePage.completedTasksTitle"}
               values={{ count: completedTransactions.length }}
             />
           </H4>
@@ -622,13 +591,19 @@ export const MainContent = props => {
             ))}
           </div>
         </div>
-      ) : !loadingTransactions && userTypeRoles.provider ? (
+      ) : !loadingTransactions ? (
+        // Empty state for both user types
         <div className={classNames(css.listingsContainer, css.completedListings)}>
           <H4 as="h2" className={css.listingsTitle}>
-            <FormattedMessage id="ProfilePage.completedTasksTitle" values={{ count: 0 }} />
+            <FormattedMessage 
+              id={userTypeRoles.customer ? "ProfilePage.completedListingsTitle" : "ProfilePage.completedTasksTitle"}
+              values={{ count: 0 }} 
+            />
           </H4>
           <p className={css.emptyState}>
-            <FormattedMessage id="ProfilePage.emptyCompletedTasks" />
+            <FormattedMessage 
+              id={userTypeRoles.customer ? "ProfilePage.emptyCompletedListings" : "ProfilePage.emptyCompletedTasks"}
+            />
           </p>
         </div>
       ) : null}

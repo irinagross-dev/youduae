@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { FormattedMessage } from '../../util/reactIntl';
-import { Page, LayoutSingleColumn, NamedLink, Avatar, VerificationBadge } from '../../components';
+import { Page, LayoutSingleColumn, NamedLink, Avatar, VerificationBadge, SubcategoryFilter } from '../../components';
 import TopbarContainer from '../TopbarContainer/TopbarContainer';
 import FooterContainer from '../FooterContainer/FooterContainer';
-import { getCategoryLabel, SERVICE_CATEGORIES } from '../../config/serviceCategories';
+import { getCategoryLabel, SERVICE_CATEGORIES, getSubcategoryLabel } from '../../config/serviceCategories';
 import { searchExecutors } from '../../util/api';
 import css from './CategoryExecutorsPage.module.css';
 
@@ -12,16 +12,27 @@ import css from './CategoryExecutorsPage.module.css';
  * Страница со списком исполнителей по категории услуг
  * 
  * URL: /category/:categoryId
- * Например: /category/construction
+ * Например: /category/repairs_main (Ремонт и строительство)
  */
 const CategoryExecutorsPage = () => {
   const { categoryId } = useParams();
+  const location = useLocation();
   const [executors, setExecutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   const categoryLabel = getCategoryLabel(categoryId, 'ru');
   const categoryExists = SERVICE_CATEGORIES.find(cat => cat.id === categoryId);
+
+  // Получаем subcategory из URL query params
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const sub = params.get('sub');
+    if (sub) {
+      setSelectedSubcategory(sub);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     if (!categoryExists) {
@@ -81,6 +92,17 @@ const CategoryExecutorsPage = () => {
     return stars;
   };
 
+  // Фильтруем исполнителей по выбранной подкатегории
+  const filteredExecutors = selectedSubcategory
+    ? executors.filter(executor => {
+        const subcategories = executor.attributes?.profile?.publicData?.subcategories;
+        if (!subcategories || !subcategories[categoryId]) {
+          return false;
+        }
+        return subcategories[categoryId].includes(selectedSubcategory);
+      })
+    : executors;
+
   if (!categoryExists) {
     return (
       <Page title="Категория не найдена" scrollingDisabled={false}>
@@ -119,11 +141,21 @@ const CategoryExecutorsPage = () => {
             </NamedLink>
             <h1 className={css.title}>
               Исполнители: {categoryLabel}
+              {selectedSubcategory && ` / ${getSubcategoryLabel(categoryId, selectedSubcategory, 'ru')}`}
             </h1>
             <p className={css.subtitle}>
-              Найдено {executors.length} {executors.length === 1 ? 'исполнитель' : 'исполнителей'}
+              Найдено {filteredExecutors.length} {filteredExecutors.length === 1 ? 'исполнитель' : 'исполнителей'}
             </p>
           </div>
+
+          {/* Фильтр по подкатегориям */}
+          {!loading && !error && executors.length > 0 && (
+            <SubcategoryFilter
+              categoryId={categoryId}
+              selectedSubcategory={selectedSubcategory}
+              onSubcategoryChange={setSelectedSubcategory}
+            />
+          )}
 
           {/* Загрузка */}
           {loading && (
@@ -134,15 +166,27 @@ const CategoryExecutorsPage = () => {
           )}
 
           {/* Ошибка или нет исполнителей */}
-          {(error || (!loading && executors.length === 0)) && (
+          {(error || (!loading && filteredExecutors.length === 0)) && (
             <div className={css.empty}>
               <p className={css.emptyIcon}>😔</p>
               <h2>
-                <FormattedMessage id="CategoryExecutorsPage.noExecutorsTitle" />
+                <FormattedMessage 
+                  id={selectedSubcategory ? "CategoryExecutorsPage.noExecutorsInSubcategory" : "CategoryExecutorsPage.noExecutorsTitle"} 
+                />
               </h2>
               <p className={css.noExecutorsMessage}>
-                <FormattedMessage id="CategoryExecutorsPage.noExecutorsMessage" />
+                <FormattedMessage 
+                  id={selectedSubcategory ? "CategoryExecutorsPage.tryAnotherSubcategory" : "CategoryExecutorsPage.noExecutorsMessage"} 
+                />
               </p>
+              {selectedSubcategory && (
+                <button 
+                  onClick={() => setSelectedSubcategory(null)}
+                  className={css.resetFilterButton}
+                >
+                  Показать всех исполнителей
+                </button>
+              )}
               <p className={css.hint}>
                 <NamedLink name="LandingPage" className={css.backToHomeLink}>
                   ← Вернуться на главную
@@ -153,7 +197,7 @@ const CategoryExecutorsPage = () => {
 
           {/* Список исполнителей */}
 
-          {!loading && !error && executors.length > 0 && (
+          {!loading && !error && filteredExecutors.length > 0 && (
             <div className={css.tableContainer}>
               <table className={css.table}>
                 <thead>
@@ -168,7 +212,7 @@ const CategoryExecutorsPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {executors.map(executor => {
+                  {filteredExecutors.map(executor => {
                     // Проверяем верификацию (приходит с бэкенда)
                     const isVerified = executor.isVerified === true;
 

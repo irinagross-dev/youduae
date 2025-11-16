@@ -9,19 +9,23 @@ const GOOGLE_MAPS_SCRIPT_ID = 'GoogleMapsApi';
  * These scripts are relevant for whole application: location search in Topbar and maps on different pages.
  * However, if you don't need location search and maps, you can just omit this component from app.js
  * Note: another common point to add <scripts>, <links> and <meta> tags is Page.js
- *       and Stripe script is added in public/index.html
+ *       Stripe script is now loaded lazily on demand
  *
  * Note 2: When adding new external scripts/styles/fonts/etc.,
  *         if a Content Security Policy (CSP) is turned on, the new URLs
  *         should be whitelisted in the policy. Check: server/csp.js
  */
 export const IncludeScripts = props => {
-  const { marketplaceRootURL: rootURL, maps, analytics } = props?.config || {};
+  const { marketplaceRootURL: rootURL, maps, analytics, currentPage } = props?.config || {};
   const { googleAnalyticsId, plausibleDomains } = analytics;
 
   const { mapProvider, googleMapsAPIKey, mapboxAccessToken } = maps || {};
   const isGoogleMapsInUse = mapProvider === 'googleMaps';
   const isMapboxInUse = mapProvider === 'mapbox';
+
+  // Pages where maps are NOT needed (lazy load on other pages)
+  const pagesWithoutMaps = ['LandingPage', 'AboutPage', 'TermsOfServicePage', 'PrivacyPolicyPage'];
+  const shouldLoadMaps = currentPage ? !pagesWithoutMaps.includes(currentPage) : true;
 
   // Add Google Analytics script if correct id exists (it should start with 'G-' prefix)
   // See: https://developers.google.com/analytics/devguides/collection/gtagjs
@@ -31,43 +35,46 @@ export const IncludeScripts = props => {
   let mapLibraries = [];
   let analyticsLibraries = [];
 
-  if (isMapboxInUse) {
-    // NOTE: remember to update mapbox-sdk.min.js to a new version regularly.
-    // mapbox-sdk.min.js is included from static folder for CSP purposes.
-    mapLibraries.push(
-      <script key="mapboxSDK" src={`${rootURL}/static/scripts/mapbox/mapbox-sdk.min.js`}></script>
-    );
-    // License information for v3.7.0 of the mapbox-gl-js library:
-    // https://github.com/mapbox/mapbox-gl-js/blob/v3.7.0/LICENSE.txt
+  // Only load maps if needed on current page
+  if (shouldLoadMaps) {
+    if (isMapboxInUse) {
+      // NOTE: remember to update mapbox-sdk.min.js to a new version regularly.
+      // mapbox-sdk.min.js is included from static folder for CSP purposes.
+      mapLibraries.push(
+        <script key="mapboxSDK" src={`${rootURL}/static/scripts/mapbox/mapbox-sdk.min.js`}></script>
+      );
+      // License information for v3.7.0 of the mapbox-gl-js library:
+      // https://github.com/mapbox/mapbox-gl-js/blob/v3.7.0/LICENSE.txt
 
-    // Add CSS for Mapbox map
-    mapLibraries.push(
-      <link
-        key="mapbox_GL_CSS"
-        href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css"
-        rel="stylesheet"
-        crossOrigin
-      />
-    );
-    // Add Mapbox library
-    mapLibraries.push(
-      <script
-        id={MAPBOX_SCRIPT_ID}
-        key="mapbox_GL_JS"
-        src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"
-        crossOrigin
-      ></script>
-    );
-  } else if (isGoogleMapsInUse) {
-    // Add Google Maps library
-    mapLibraries.push(
-      <script
-        id={GOOGLE_MAPS_SCRIPT_ID}
-        key="GoogleMapsApi"
-        src={`https://maps.googleapis.com/maps/api/js?key=${googleMapsAPIKey}&libraries=places`}
-        crossOrigin
-      ></script>
-    );
+      // Add CSS for Mapbox map
+      mapLibraries.push(
+        <link
+          key="mapbox_GL_CSS"
+          href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css"
+          rel="stylesheet"
+          crossOrigin
+        />
+      );
+      // Add Mapbox library
+      mapLibraries.push(
+        <script
+          id={MAPBOX_SCRIPT_ID}
+          key="mapbox_GL_JS"
+          src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"
+          crossOrigin
+        ></script>
+      );
+    } else if (isGoogleMapsInUse) {
+      // Add Google Maps library (lazy loaded on pages that need it)
+      mapLibraries.push(
+        <script
+          id={GOOGLE_MAPS_SCRIPT_ID}
+          key="GoogleMapsApi"
+          src={`https://maps.googleapis.com/maps/api/js?key=${googleMapsAPIKey}&libraries=places`}
+          crossOrigin
+        ></script>
+      );
+    }
   }
 
   if (googleAnalyticsId && hasGoogleAnalyticsv4Id) {

@@ -1,0 +1,74 @@
+/* SubcategoryFilter styles */
+
+.root {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--colorGrey100);
+}
+
+.filterLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--colorGrey700);
+  margin-bottom: 16px;
+}
+
+.filterButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filterButton {
+  padding: 10px 20px;
+  border: 2px solid var(--colorGrey200);
+  border-radius: 24px;
+  background: white;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--colorGrey700);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filterButton:hover {
+  border-color: var(--marketplaceColor);
+  color: var(--marketplaceColor);
+  background: var(--marketplaceColorLight, rgba(99, 135, 177, 0.05));
+}
+
+.filterButton.active {
+  border-color: var(--marketplaceColor);
+  background: var(--marketplaceColor);
+  color: white;
+  font-weight: 600;
+}
+
+.filterButton.active:hover {
+  background: var(--marketplaceColorDark, #5a7a9f);
+  border-color: var(--marketplaceColorDark, #5a7a9f);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+  .root {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
+
+  .filterLabel {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .filterButtons {
+    gap: 8px;
+  }
+
+  .filterButton {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+

@@ -33,7 +33,7 @@ import {
 import { getErrorMessages } from './ErrorMessages';
 
 import CustomTopbar from './CustomTopbar';
-import StripePaymentForm from './StripePaymentForm/StripePaymentForm';
+import StripePaymentForm from './StripePaymentForm/StripePaymentFormWrapper';
 import DetailsSideCard from './DetailsSideCard';
 import MobileListingImage from './MobileListingImage';
 import MobileOrderBreakdown from './MobileOrderBreakdown';

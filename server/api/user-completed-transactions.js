@@ -22,25 +22,41 @@ module.exports = (req, res) => {
     clientSecret: integrationClientSecret,
   });
 
-  console.log('🔍 Fetching completed transactions for customer:', userId);
+  console.log('🔍 Fetching completed transactions for user (both roles):', userId);
 
-  // Query ALL transactions first to see what states exist
-  integrationSdk.transactions
-    .query({
-      customerId: userId, // Customer in transaction = executor/specialist
-      // Don't filter by states initially - get all to debug
-      include: ['listing', 'customer', 'provider'],
-      perPage: 100,
-    })
-    .then(response => {
-      const transactions = response.data.data || [];
-      const included = response.data.included || [];
+  // Fetch transactions where user is CUSTOMER (executor/specialist)
+  const customerTransactionsPromise = integrationSdk.transactions.query({
+    customerId: userId,
+    include: ['listing', 'customer', 'provider'],
+    perPage: 100,
+  });
+
+  // Fetch transactions where user is PROVIDER (listing author/task creator)
+  const providerTransactionsPromise = integrationSdk.transactions.query({
+    providerId: userId,
+    include: ['listing', 'customer', 'provider'],
+    perPage: 100,
+  });
+
+  // Wait for both queries to complete
+  Promise.all([customerTransactionsPromise, providerTransactionsPromise])
+    .then(([customerResponse, providerResponse]) => {
+      const customerTransactions = customerResponse.data.data || [];
+      const providerTransactions = providerResponse.data.data || [];
+      const allTransactions = [...customerTransactions, ...providerTransactions];
+      
+      // Combine included arrays
+      const customerIncluded = customerResponse.data.included || [];
+      const providerIncluded = providerResponse.data.included || [];
+      const included = [...customerIncluded, ...providerIncluded];
 
       // Debug: log all transaction states
-      console.log('🔍 All transactions for customer:', {
+      console.log('🔍 All transactions for user:', {
         userId,
-        total: transactions.length,
-        states: transactions.map(t => ({
+        asCustomer: customerTransactions.length,
+        asProvider: providerTransactions.length,
+        total: allTransactions.length,
+        states: allTransactions.map(t => ({
           id: t.id.uuid,
           lastTransition: t.attributes.lastTransition,
           processState: t.attributes.processState,
@@ -57,13 +73,13 @@ module.exports = (req, res) => {
         'transition/review-2-by-provider',
       ];
       
-      const filteredTransactions = transactions.filter(t => {
+      const filteredTransactions = allTransactions.filter(t => {
         const lastTransition = t.attributes.lastTransition;
         return completedTransitions.includes(lastTransition);
       });
 
       console.log('🔍 Filtered transactions:', {
-        before: transactions.length,
+        before: allTransactions.length,
         after: filteredTransactions.length,
         lastTransitions: filteredTransactions.map(t => t.attributes.lastTransition),
       });
@@ -86,9 +102,9 @@ module.exports = (req, res) => {
       });
 
       console.log('✅ Found completed transactions:', {
-        totalTransactions: transactions.length,
+        totalTransactions: allTransactions.length,
         completedWorks: completedWorks.length,
-        states: transactions.map(t => t.attributes.lastTransition),
+        states: allTransactions.map(t => t.attributes.lastTransition),
         sample: completedWorks[0],
       });
 

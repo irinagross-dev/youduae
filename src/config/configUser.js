@@ -66,7 +66,7 @@ export const userFields = [
     },
     saveConfig: {
       label: 'ServiceCategory.selectServices',
-      displayInSignUp: true,
+      displayInSignUp: false, // ⚠️ Скрыто! Используем кастомный ServiceCategorySelector
       isRequired: true,
       requiredMessage: 'ServiceCategory.requiredMessage',
       placeholderMessage: 'ServiceCategory.placeholder',

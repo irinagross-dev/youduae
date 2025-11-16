@@ -120,6 +120,11 @@
 
 .completedListings {
   margin-top: 32px;
+  padding: 24px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 2px dashed #e5e7eb;
+  min-height: 200px;
 }
 
 .listingsTitle {
@@ -409,6 +414,22 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  
+  @media (max-width: 768px) {
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+  
+  @media (max-width: 768px) {
+    &:hover {
+      background: #f3f4f6;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+  }
 }
 
 .statLabel {
@@ -451,9 +472,73 @@
   font-size: 28px;
   font-weight: var(--fontWeightBold);
   color: var(--marketplaceColor);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
 
   @media (--viewportLarge) {
     font-size: 32px;
+    min-width: 50px;
+  }
+}
+
+/* Medium numbers (10-99) */
+.taskCountMedium {
+  font-size: 26px;
+  letter-spacing: -0.5px;
+
+  @media (--viewportLarge) {
+    font-size: 30px;
+  }
+}
+
+/* Large numbers (100+) */
+.taskCountLarge {
+  font-size: 24px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: -1px;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, var(--marketplaceColor) 0%, #00796B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+
+  @media (--viewportLarge) {
+    font-size: 28px;
+    padding: 6px 10px;
+  }
+}
+
+/* Add a subtle badge effect for 100+ */
+.taskCountLarge::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: var(--marketplaceColor);
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+
+  @media (--viewportLarge) {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 
