@@ -422,9 +422,12 @@ class ProfileSettingsFormComponent extends Component {
                 
                 {/* Остальные кастомные поля */}
                 {userFieldProps.map(({ key, ...fieldProps }) => {
-                  // Пропускаем serviceCategories для Customer - показываем через ServiceCategorySelector
-                  // key может быть 'pub_serviceCategories' (с namespace)
-                  if ((key === 'serviceCategories' || key === 'pub_serviceCategories') && userTypeConfig?.userType === 'customer') {
+                  // Пропускаем serviceCategories и subcategories для Customer - показываем через ServiceCategorySelector
+                  // key может быть с namespace (pub_serviceCategories, pub_subcategories)
+                  const isServiceCategoriesField = key === 'serviceCategories' || key === 'pub_serviceCategories';
+                  const isSubcategoriesField = key === 'subcategories' || key === 'pub_subcategories';
+                  
+                  if ((isServiceCategoriesField || isSubcategoriesField) && userTypeConfig?.userType === 'customer') {
                     return null;
                   }
                   return <CustomExtendedDataField key={key} {...fieldProps} formId={formId} />;
