@@ -261,11 +261,22 @@ export const AuthenticationForms = props => {
       .trim();
     const displayNameValue = normalizedDisplayName || fallbackDisplayName;
 
+    // DEBUG: Проверяем что пришло из формы
+    console.log('🔍 [SIGNUP] Raw form values (rest):', rest);
+    console.log('🔍 [SIGNUP] serviceCategories:', rest.serviceCategories);
+    console.log('🔍 [SIGNUP] subcategories:', rest.subcategories);
+
     // Преобразуем subcategories объект в JSON-строку для хранения
     const restWithSerializedSubcategories = { ...rest };
     if (rest.subcategories && typeof rest.subcategories === 'object') {
       restWithSerializedSubcategories.subcategories = JSON.stringify(rest.subcategories);
+      console.log('✅ [SIGNUP] Serialized subcategories:', restWithSerializedSubcategories.subcategories);
+    } else {
+      console.warn('⚠️ [SIGNUP] subcategories NOT found or not an object');
     }
+
+    const publicDataFields = pickUserFieldsData(restWithSerializedSubcategories, 'public', userType, userFields);
+    console.log('🔍 [SIGNUP] Picked publicData fields:', publicDataFields);
 
     const params = {
       email,
@@ -275,7 +286,7 @@ export const AuthenticationForms = props => {
       ...(displayNameValue ? { displayName: displayNameValue } : {}),
       publicData: {
         userType,
-        ...pickUserFieldsData(restWithSerializedSubcategories, 'public', userType, userFields),
+        ...publicDataFields,
       },
       privateData: {
         ...pickUserFieldsData(restWithSerializedSubcategories, 'private', userType, userFields),
@@ -286,6 +297,8 @@ export const AuthenticationForms = props => {
         ...getNonUserFieldParams(restWithSerializedSubcategories, userFields),
       },
     };
+
+    console.log('🚀 [SIGNUP] Final params being sent to API:', JSON.stringify(params, null, 2));
 
     return submitSignup(params);
   };

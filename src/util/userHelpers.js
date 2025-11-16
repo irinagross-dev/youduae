@@ -47,6 +47,23 @@ export const pickUserFieldsData = (data, targetScope, targetUserType, userFieldC
     const isTargetUserType =
       !userTypeConfig.limitToUserTypeIds || userTypeConfig.userTypeIds.includes(targetUserType);
 
+    // DEBUG
+    if (key === 'serviceCategories' || key === 'subcategories') {
+      console.log(`🔍 [pickUserFieldsData] Field: ${key}`, {
+        key,
+        namespacedKey,
+        scope,
+        targetScope,
+        schemaType,
+        isKnownSchemaType,
+        isTargetScope,
+        isTargetUserType,
+        userTypeConfig,
+        targetUserType,
+        dataValue: getFieldValue(data, namespacedKey),
+      });
+    }
+
     if (isKnownSchemaType && isTargetScope && isTargetUserType) {
       const fieldValue = getFieldValue(data, namespacedKey);
       return { ...fields, [key]: fieldValue };
